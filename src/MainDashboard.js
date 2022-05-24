@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
+import MainHeader from "./MainHeader.js"
 
 class MainDashboard extends React.Component {
     render() {
         return(
             <div>
-                <p>this is the main dashboard</p>
+                <MainHeader />
             </div>
         );
     }
