@@ -4,7 +4,7 @@ class ClassPage extends React.Component {
     render() {
         return(
             <div>
-                
+                <p>class page</p>
             </div>
         );
     }
