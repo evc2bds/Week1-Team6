@@ -1,5 +1,4 @@
 import Student from "./Student";
-import Response from "./Response.js"
 import {initializeApp} from "firebase/app"
 import { getFirestore, collection, deleteDoc, addDoc, doc, getDocs, updateDoc, } from "firebase/firestore";
 import {useState, useEffect, useRef} from "react"
@@ -16,6 +15,7 @@ function StudentDirectory() {
       const db = getFirestore(firebaseApp)
      
       //initialize students
+      const textFieldRef = useRef(null);
       const [students, setStudents] = useState([])
       //get prev responses
       useEffect(() => {
@@ -24,7 +24,7 @@ function StudentDirectory() {
             .then((allStudents)=>{
                 allStudents.forEach((student)=>student.push({ id: student.id, ...student.data()}))
                 //sort by last name
-                sort((a,b) => (a.lname < b.lname) ? 1:-1)
+                students.sort((a,b) => (a.lname < b.lname) ? 1:-1)
                 setStudents(students)
             })
         }, [db])
@@ -37,9 +37,43 @@ function StudentDirectory() {
                 lname : textFieldRef.current.value,
                 gpa : textFieldRef.current.value
             }
-            addDoc(collection(db, "students"), newResponse)//add the new student
+            addDoc(collection(db, "students"), newStudent)//add the new student
             .then((docRef) => {
-                setStudents([...responses, {id: docRef.id, ... newResponse}]) //update state
+                setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
+            })
+            .cathc((s)=> console.eroor(s))
+
+            textFieldRef.current.value=""
+        }
+
+        const removeStudent = (s) => {
+            s.preventDefault();
+            //figure out how to enter multiple information for 1 student
+            const newStudent = {
+                fname : textFieldRef.current.value,
+                lname : textFieldRef.current.value,
+                gpa : textFieldRef.current.value
+            }
+            addDoc(collection(db, "students"), newStudent)//add the new student
+            .then((docRef) => {
+                setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
+            })
+            .cathc((s)=> console.eroor(s))
+
+            textFieldRef.current.value=""
+        }
+
+        const editStudent = (s) => {
+            s.preventDefault();
+            //figure out how to enter multiple information for 1 student
+            const newStudent = {
+                fname : textFieldRef.current.value,
+                lname : textFieldRef.current.value,
+                gpa : textFieldRef.current.value
+            }
+            addDoc(collection(db, "students"), newStudent)//add the new student
+            .then((docRef) => {
+                setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
             })
             .cathc((s)=> console.eroor(s))
 
@@ -65,7 +99,7 @@ function StudentDirectory() {
                 </div>
                
       
-      {responses.map((response) => <Response key={response.id} id={response.id} responseText={response.responseText} upvotes={response.upvotes} upvote={upvote}/> )}
+      {students.map((student) => <Student key={student.id} id={student.id} responseText={student.responseText} /> )}
             </div>
         );
 }

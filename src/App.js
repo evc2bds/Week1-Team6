@@ -5,7 +5,7 @@ import StudentDirectory from './Components/StudentDirectory';
 function App() {
   return (
     <div className="App">
-      
+      <StudentDirectory/>
     </div>
   );
 }
