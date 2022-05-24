@@ -33,32 +33,30 @@ function StudentDirectory() {
             s.preventDefault();
             //figure out how to enter multiple information for 1 student
             const newStudent = {
-                fname : textFieldRef.current.value,
-                lname : textFieldRef.current.value,
-                gpa : textFieldRef.current.value
+                fname : "Jane",
+                lname : "Doe",
+                gpa : 2.5
             }
             addDoc(collection(db, "students"), newStudent)//add the new student
             .then((docRef) => {
                 setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
             })
-            .cathc((s)=> console.eroor(s))
+            .cathc((s)=> console.error(s))
 
             textFieldRef.current.value=""
         }
 
         const removeStudent = (s) => {
             s.preventDefault();
-            //figure out how to enter multiple information for 1 student
-            const newStudent = {
-                fname : textFieldRef.current.value,
-                lname : textFieldRef.current.value,
-                gpa : textFieldRef.current.value
+            //figure out how to remove student
+            const targeStudent = {
+
             }
-            addDoc(collection(db, "students"), newStudent)//add the new student
+            deleteDoc(collection(db, "students"), targetStudent)//add the new student
             .then((docRef) => {
-                setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
+                setStudents([...students, {id: docRef.id, ... targeStudent}]) //update state
             })
-            .cathc((s)=> console.eroor(s))
+            .cathc((s)=> console.error(s))
 
             textFieldRef.current.value=""
         }
@@ -75,7 +73,7 @@ function StudentDirectory() {
             .then((docRef) => {
                 setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
             })
-            .cathc((s)=> console.eroor(s))
+            .cathc((s)=> console.error(s))
 
             textFieldRef.current.value=""
         }
@@ -83,7 +81,7 @@ function StudentDirectory() {
         return(
             <div className="studentdirectory">
                 <h1>Student Directory</h1>
-                <div>
+               
                 <form onSubmit={addStudent} >
                     <input type="text" ref={textFieldRef} />
                     <input type="submit" />
