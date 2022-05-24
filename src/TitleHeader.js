@@ -6,7 +6,7 @@ class TitleHeader extends React.Component {
         return(
             <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <img src={logo} alt={"Thomas Jefferson Elementary School"} style={{width: 180, height: "auto"}}/>
-                <h2 style={{fontFamily: "arial", fontSize: 64, textAlign: "center", fontStyle: "italic", color: "#080740"}}>TJ Elementary School Dashboard</h2>
+                <h2 style={{fontFamily: "arial", fontSize: 64, textAlign: "center", fontStyle: "italic", color: "#080740", marginLeft: 20}}>TJ Elementary School Dashboard</h2>
             </div>
         );
     }

@@ -7,6 +7,8 @@ class MainDashboard extends React.Component {
         return(
             <div>
                 <MainHeader />
+                {/* <CurrentDay /> */}
+                {/* <ImportantLinks /> */}
             </div>
         );
     }
