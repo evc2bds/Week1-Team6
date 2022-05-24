@@ -3,7 +3,7 @@ import MainDashboard from "./MainDashboard.js"
 
 function App() {
   return (
-    <div className="App" style={{backgroundColor: "#9b91b5"}}>
+    <div className="App">
       <MainDashboard />
     </div>
   );
