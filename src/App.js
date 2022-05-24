@@ -1,3 +1,5 @@
+import './App.css';
+import MainDashboard from "./MainDashboard.js"
 import { initializeApp } from "firebase/app"
 import { getFirestore } from "firebase/firestore";
 
@@ -17,7 +19,7 @@ function App() {
 
   return (
     <div className="App">
-      
+      <MainDashboard />
     </div>
   );
 }
