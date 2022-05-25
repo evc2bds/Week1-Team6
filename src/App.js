@@ -1,14 +1,13 @@
-import TeacherDashboard from "./Components/TeacherDashboard";
+import './App.css';
+import MainDashboard from "./MainDashboard.js"
+
 
 function App() {
 
   return (
-    <>
-      <TeacherDashboard />
-    </>
-    // <div className="App">
-      
-    // </div>
+    <div className="App">
+      <MainDashboard />
+    </div>
   );
 }
 
