@@ -1,11 +1,16 @@
+//import React, {useState, useEffect, useRef} from 'react'
 function Student(props) {
     return (
       <div className="student">
-        <h2>Last Name: {props.lname}</h2>
-        <h3>First Name: {props.fname}</h3>
-        <p>GPA: {props.gpa} </p>
-        
-      </div>
+      <br></br>
+      <p>Name: {props.lastName}, {props.firstName} | GPA: {props.stuGPA}</p>
+      <input type="submit" onClick={() => props.editFirstName(props.id)} value="Edit First Name" />
+      <input type="submit" onClick={() => props.editLastName(props.id)} value="Edit Last Name" />
+      <input type="submit" onClick={() => props.editGPA(props.id)} value="Edit GPA (4.0 scale)" />
+      <input type="submit" onClick={() => props.deleteStudent(props.id)} value="Delete Teacher" />
+      <br></br>
+      
+  </div>
     );
   }
   

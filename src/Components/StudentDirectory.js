@@ -15,7 +15,10 @@ function StudentDirectory() {
       const db = getFirestore(firebaseApp)
      
       //initialize students
-      const textFieldRef = useRef(null);
+      const textFieldRefFirst = useRef(null);
+      const textFieldRefLast = useRef(null);
+      const textFieldRefGPA = useRef(null);
+     // const textFieldRefBday = useRef(null);
       const [students, setStudents] = useState([])
       //get prev responses
       useEffect(() => {
@@ -33,72 +36,109 @@ function StudentDirectory() {
             s.preventDefault();
             //figure out how to enter multiple information for 1 student
             const newStudent = {
-                fname : "Jane",
-                lname : "Doe",
-                gpa : 2.5
+                fname : textFieldRefFirst.current.value,
+                lname : textFieldRefLast.current.value,
+                gpa : textFieldRefGPA.current.value,
             }
             addDoc(collection(db, "students"), newStudent)//add the new student
             .then((docRef) => {
-                setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
+                setStudents([...students, {id: docRef.id, ...newStudent}]) //update state
             })
-            .cathc((s)=> console.error(s))
+            .cathc((e)=> console.error(e))
 
-            textFieldRef.current.value=""
+            textFieldRefFirst.current.value = ""
+            textFieldRefLast.current.value = ""
+            textFieldRefGPA.current.value = ""
+
         }
 
-        const removeStudent = (s) => {
-            s.preventDefault();
-            //figure out how to remove student
-            const targeStudent = {
-
-            }
-            deleteDoc(collection(db, "students"), targetStudent)//add the new student
+        const deleteStudent = (sID) => {
+            //s.preventDefault();
+            //figured out how to remove student
+            deleteDoc(doc(db, "students", sID))
             .then((docRef) => {
-                setStudents([...students, {id: docRef.id, ... targeStudent}]) //update state
+                const tempStudents = [...students]
+                tempStudents.forEach((student) => {
+                    console.log("stuID: "+ student.id)
+                })
+                setStudents(tempStudents) //update state
             })
-            .cathc((s)=> console.error(s))
+            .catch((e)=> console.error(e))
 
-            textFieldRef.current.value=""
+            
         }
 
-        const editStudent = (s) => {
-            s.preventDefault();
-            //figure out how to enter multiple information for 1 student
-            const newStudent = {
-                fname : textFieldRef.current.value,
-                lname : textFieldRef.current.value,
-                gpa : textFieldRef.current.value
-            }
-            addDoc(collection(db, "students"), newStudent)//add the new student
-            .then((docRef) => {
-                setStudents([...students, {id: docRef.id, ... newStudent}]) //update state
+        const editFirstName = (stuID) => {
+            updateDoc(doc(db, "students", stuID), {
+                fname: textFieldRefFirst.current.value
             })
-            .cathc((s)=> console.error(s))
-
-            textFieldRef.current.value=""
+            .then((docRef) => {
+                const tempStudents = [...students]
+                tempStudents.forEach((student) => {
+                    console.log("stuID: "+ student.id)
+                })
+                setStudents(tempStudents) //update state
+            })
+            .catch((e) => console.error(e))
+            textFieldRefFirst.current.value=""
+        }
+    
+        const editLastName = (stuID) => {
+            updateDoc(doc(db, "students", stuID), {
+                lname: textFieldRefLast.current.value
+            })
+            .then((docRef) => {
+                const tempStudents = [...students]
+                tempStudents.forEach((student) => {
+                    console.log("stuID: "+ student.id)
+                })
+                setStudents(tempStudents) //update state
+            })
+            .catch((e) => console.error(e))
+            textFieldRefLast.current.value=""
+        }
+    
+        const editGPA = (stuID) => {
+            updateDoc(doc(db, "students", stuID), {
+                gpa: textFieldRefGPA.current.value
+            })
+            .then((docRef) => {
+                const tempStudents = [...students]
+                tempStudents.forEach((student) => {
+                    console.log("stuID: "+ student.id)
+                })
+                setStudents(tempStudents) //update state
+            })
+            .catch((e) => console.error(e))
+            textFieldRefGPA.current.value=""
         }
 
         return(
             <div className="studentdirectory">
-                <h1>Student Directory</h1>
-               
-                <form onSubmit={addStudent} >
-                    <input type="text" ref={textFieldRef} />
-                    <input type="submit" />
-                </form>
-                <form onSubmit={removeStudent} >
-                    <input type="text" ref={textFieldRef} />
-                    <input type="submit" />
-                </form>
-                <form onSubmit={editStudent} >
-                    <input type="text" ref={textFieldRef} />
-                    <input type="submit" />
-                </form>
-                </div>
-               
-      
-      {students.map((student) => <Student key={student.id} id={student.id} responseText={student.responseText} /> )}
-            </div>
+            <br></br>
+            <form onSubmit={addStudent}>
+                <label for="firstName">Enter Student's First Name: </label>
+                <input id="firstName" type="text" ref={textFieldRefFirst} />
+                <p></p>
+
+                <label for="lastName">Enter Student's Last Name: </label>
+                <input id="lastName" type="text" ref={textFieldRefLast} />
+                <p></p>
+
+                <label for="stuGPA">Enter Student's GPA: </label>
+                <input id="stuGPA" type="text" ref={textFieldRefGPA} />
+                <p></p>
+                <input type="submit" value="Add Student"/>
+            </form>
+            <p>
+                To edit a student's first name, last name, or GPA, type your change into the 
+                corresponding section of the Add Student form and click the corresponding button under 
+                the student you want to apply the change to. Refresh the page to see the changes.
+            </p>
+
+            {students.map((student) => <Student key={student.id} id={student.id} firstName={student.fname} lastName={student.lname} stuGPA={student.gpa} deleteStudent={deleteStudent} student={student} editFirstName={editFirstName} editLastName={editLastName} editGPA={editGPA}/>)}
+
+        </div>
         );
 }
 
