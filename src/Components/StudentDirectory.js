@@ -1,12 +1,13 @@
-import Student from "./Student";
+import Student from "./Student.js";
 import {initializeApp} from "firebase/app"
 import { getFirestore, collection, deleteDoc, addDoc, doc, getDocs, updateDoc, } from "firebase/firestore";
 import {useState, useEffect, useRef} from "react"
+
 function StudentDirectory() {
     const firebaseConfig = {
         apiKey: process.env.REACT_APP_apiKey,
         authDomain: process.env.REACT_APP_authDomain,
-        projectId: process.env.REACT_APP_projectId,
+        projectId: "week1-team6",
         storageBucket: process.env.REACT_APP_storageBucket,
         messagingSenderId: process.env.REACT_APP_messagingSenderId,
         appId: process.env.REACT_APP_appId
@@ -23,11 +24,11 @@ function StudentDirectory() {
       //get prev responses
       useEffect(() => {
             const students = []
-            getDocs(collection(db, "students")) //probably need to swtich with real collection name
+            getDocs(collection(db, "students")) //grab collection
             .then((allStudents)=>{
-                allStudents.forEach((student)=>student.push({ id: student.id, ...student.data()}))
+                allStudents.forEach((student)=>students.push({ id: student.id, ...student.data()}))
                 //sort by last name
-                students.sort((a,b) => (a.lname < b.lname) ? 1:-1)
+                students.sort((a,b) => (a.lname > b.lname) ? 1:-1)
                 setStudents(students)
             })
         }, [db])
@@ -38,13 +39,13 @@ function StudentDirectory() {
             const newStudent = {
                 fname : textFieldRefFirst.current.value,
                 lname : textFieldRefLast.current.value,
-                gpa : textFieldRefGPA.current.value,
+                GPA : textFieldRefGPA.current.value,
             }
             addDoc(collection(db, "students"), newStudent)//add the new student
             .then((docRef) => {
                 setStudents([...students, {id: docRef.id, ...newStudent}]) //update state
             })
-            .cathc((e)=> console.error(e))
+            .catch((e)=> console.error(e))
 
             textFieldRefFirst.current.value = ""
             textFieldRefLast.current.value = ""
@@ -100,7 +101,7 @@ function StudentDirectory() {
     
         const editGPA = (stuID) => {
             updateDoc(doc(db, "students", stuID), {
-                gpa: textFieldRefGPA.current.value
+                GPA: textFieldRefGPA.current.value
             })
             .then((docRef) => {
                 const tempStudents = [...students]
@@ -136,7 +137,7 @@ function StudentDirectory() {
                 the student you want to apply the change to. Refresh the page to see the changes.
             </p>
 
-            {students.map((student) => <Student key={student.id} id={student.id} firstName={student.fname} lastName={student.lname} stuGPA={student.gpa} deleteStudent={deleteStudent} student={student} editFirstName={editFirstName} editLastName={editLastName} editGPA={editGPA}/>)}
+            {students.map((student) => <Student key={student.id} id={student.id} firstName={student.fname} lastName={student.lname} stuGPA={student.GPA} deleteStudent={deleteStudent} student={student} editFirstName={editFirstName} editLastName={editLastName} editGPA={editGPA}/>)}
 
         </div>
         );

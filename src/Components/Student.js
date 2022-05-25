@@ -1,5 +1,8 @@
-//import React, {useState, useEffect, useRef} from 'react'
+// import React, { useRef} from 'react'
 function Student(props) {
+  // const textFieldRefEditFirst = useRef(null);
+  // const textFieldRefEditLast = useRef(null);
+  // const textFieldRefGPA = useRef(null);
     return (
       <div className="student">
       <br></br>
