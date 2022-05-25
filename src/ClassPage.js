@@ -3,13 +3,14 @@ import MainHeader from "./MainHeader.js"
 import { initializeApp } from "firebase/app"
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import db from "./firebase.js"
+import RosterList from "./RosterList.js"
 
 function ClassPage () {
 
     const[classInfo, setClassInfo] = useState(); 
     const[teacherInfo, setTeacherInfo] = useState(); 
     const[curStudent, setCurStudent] = useState(); 
-    console.log(curStudent); 
+    const[allStudents, setAllStudents] = useState(); 
 
     //this will later be passed as a prop down from the dashboard
     const classID = "xo1tdfJStoQnXwKOCHV4"; 
@@ -27,17 +28,6 @@ function ClassPage () {
             .then((res) => setTeacherInfo(res.data()))
         }
     }
-    // const getStudentInfo = (studentID, x) => {
-    //     console.log(curStudent); 
-    //     if(classInfo && (curStudent.length<x+1) && studentID) {
-    //         getDoc(doc(db, "students", studentID))
-    //         .then((res) => {
-    //             let curRoster = curStudent;
-    //             curRoster.push(res.data());
-    //             setCurStudent(curRoster);
-    //         })
-    //     }
-    // }
     const buildRoster = () => {
         if(classInfo && !curStudent) {
             let roster = []; 
@@ -53,8 +43,6 @@ function ClassPage () {
         getTeacherInfo(); 
         buildRoster(); 
     }, [db])
-    // console.log(classInfo); 
-    // console.log(teacherInfo);
     let className = "..."; 
     if(classInfo) {
         className = classInfo.name;
@@ -69,16 +57,14 @@ function ClassPage () {
     if(classInfo && !curStudent) {
         buildRoster(); 
     }
-    if(curStudent) {
-        console.log(curStudent); 
-    }
-    if(curStudent) {
+    if(curStudent && classInfo) {
     return(
         <div>
             <MainHeader /> 
             <h2 style={{fontFamily: "arial", fontSize: 32}}>Class Page for {className}</h2>
-            <h3 style={{fontFamily: "arial"}}>Teacher: {teacherName}</h3>
-            {/* <RosterList /> */}
+            <h3 style={{fontFamily: "arial", fontsize: 26, fontStyle: "italic"}}>Teacher: {teacherName}</h3>
+            <h3 style={{fontFamily: "arial", fontSize: 24}}>Current Roster</h3>
+            <RosterList studentRoster={curStudent} classID={classID} rosterInfo={classInfo.roster}/>
         </div>
     );
     }
@@ -87,7 +73,7 @@ function ClassPage () {
             <div>
                 <MainHeader /> 
                 <h2 style={{fontFamily: "arial", fontSize: 32}}>Class Page for {className}</h2>
-                <h3 style={{fontFamily: "arial"}}>Teacher: {teacherName}</h3>
+                <h3 style={{fontFamily: "Times New Roman", fontsize: 26}}>Teacher: {teacherName}</h3>
                 <h1>Currently Loading Roster...</h1>
             </div>
         ); 
