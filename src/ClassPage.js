@@ -8,7 +8,7 @@ function ClassPage () {
 
     const[classInfo, setClassInfo] = useState(); 
     const[teacherInfo, setTeacherInfo] = useState(); 
-    const[curStudent, setCurStudent] = useState([]); 
+    const[curStudent, setCurStudent] = useState(); 
     console.log(curStudent); 
 
     //this will later be passed as a prop down from the dashboard
@@ -27,21 +27,31 @@ function ClassPage () {
             .then((res) => setTeacherInfo(res.data()))
         }
     }
-    const getStudentInfo = (studentID, x) => {
-        console.log(curStudent); 
-        if(classInfo && (curStudent.length<x+1) && studentID) {
-            getDoc(doc(db, "students", studentID))
-            .then((res) => {
-                let curRoster = curStudent;
-                curRoster.push(res.data());
-                setCurStudent(curRoster);
-            })
+    // const getStudentInfo = (studentID, x) => {
+    //     console.log(curStudent); 
+    //     if(classInfo && (curStudent.length<x+1) && studentID) {
+    //         getDoc(doc(db, "students", studentID))
+    //         .then((res) => {
+    //             let curRoster = curStudent;
+    //             curRoster.push(res.data());
+    //             setCurStudent(curRoster);
+    //         })
+    //     }
+    // }
+    const buildRoster = () => {
+        if(classInfo && !curStudent) {
+            let roster = []; 
+            for(let x = 0; x < classInfo.roster.length; x++) {
+                let studentID = classInfo.roster[x]._key.path.segments[6]; 
+                getDoc(doc(db, "students", studentID)).then((res) => roster.push(res.data()))
+            }
+            setCurStudent(roster); 
         }
     }
     useEffect(() => {
         getClassInfo(); 
         getTeacherInfo(); 
-        getStudentInfo(); 
+        buildRoster(); 
     }, [db])
     // console.log(classInfo); 
     // console.log(teacherInfo);
@@ -56,21 +66,13 @@ function ClassPage () {
     else{
     teacherName = teacherInfo.firstName + " " + teacherInfo.lastName; 
     }
-    console.log(curStudent); 
-    console.log(curStudent.length); 
-    if(classInfo && (curStudent.length != classInfo.roster.length)) {
-        for(let x = 0; x < classInfo.roster.length; x++) {
-            let studentID = classInfo.roster[x]._key.path.segments[6]; 
-            if(curStudent.length < x+1) {
-                console.log(curStudent.length); 
-                console.log(x); 
-                getStudentInfo(studentID, x);
-            }
-        }
-        if(curStudent.includes(classInfo.roster[classInfo.roster.length])) {
-            console.log("hi")
-        }
+    if(classInfo && !curStudent) {
+        buildRoster(); 
     }
+    if(curStudent) {
+        console.log(curStudent); 
+    }
+    if(curStudent) {
     return(
         <div>
             <MainHeader /> 
@@ -79,6 +81,17 @@ function ClassPage () {
             {/* <RosterList /> */}
         </div>
     );
+    }
+    else {
+        return(
+            <div>
+                <MainHeader /> 
+                <h2 style={{fontFamily: "arial", fontSize: 32}}>Class Page for {className}</h2>
+                <h3 style={{fontFamily: "arial"}}>Teacher: {teacherName}</h3>
+                <h1>Currently Loading Roster...</h1>
+            </div>
+        ); 
+    }
 }
 
 export default ClassPage
