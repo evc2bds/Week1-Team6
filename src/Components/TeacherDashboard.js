@@ -5,7 +5,6 @@ import db from "../firebase.js";
 
 function TeacherDashboard() {
     //Firebase config 
-
     const [teachers, setTeachers] = useState([])
     const textFieldRefFirst = useRef(null);
     const textFieldRefLast = useRef(null);
@@ -33,6 +32,49 @@ function TeacherDashboard() {
         .catch((e) => console.error(e))
     }
 
+    const editFirstName = (teacherID) => {
+        updateDoc(doc(db, "Teachers", teacherID), {
+            firstName: textFieldRefFirst.current.value
+        })
+        .then((docRef) => {
+            const updatedTeachers = [...teachers]
+            updatedTeachers.forEach((teacher) => {
+                console.log(teacher.id)
+            })
+            setTeachers(updatedTeachers)
+        })
+        .catch((e) => console.error(e))
+    }
+
+    const editLastName = (teacherID) => {
+        updateDoc(doc(db, "Teachers", teacherID), {
+            lastName: textFieldRefLast.current.value
+        })
+        .then((docRef) => {
+            const updatedTeachers = [...teachers]
+            updatedTeachers.forEach((teacher) => {
+                console.log(teacher.id)
+            })
+            setTeachers(updatedTeachers)
+        })
+        .catch((e) => console.error(e))
+    }
+
+    const editClassName = (teacherID) => {
+        updateDoc(doc(db, "Teachers", teacherID), {
+            className: textFieldRefLast.current.value
+        })
+        .then((docRef) => {
+            const updatedTeachers = [...teachers]
+            updatedTeachers.forEach((teacher) => {
+                console.log(teacher.id)
+            })
+            setTeachers(updatedTeachers)
+        })
+        .catch((e) => console.error(e))
+    }
+
+
     const addTeacher = (e) => {
         e.preventDefault(); //no reloading the page
 
@@ -53,6 +95,7 @@ function TeacherDashboard() {
 
     return (
         <div className="App">
+            <br></br>
             <form onSubmit={addTeacher}>
                 <label for="firstName">Enter Teacher's First Name: </label>
                 <input id="firstName" type="text" ref={textFieldRefFirst} />
@@ -67,8 +110,13 @@ function TeacherDashboard() {
                 <p></p>
                 <input type="submit" value="Add Teacher"/>
             </form>
+            <p>
+                To edit a teacher's first name, last name, or class, type your change into the 
+                corresponding section of the Add Teacher form and click the corresponding button under 
+                the teacher you want to apply the change to. Refresh the page to see the changes.
+            </p>
 
-            {teachers.map((teacher) => <AllTeachers key={teacher.id} id={teacher.id} firstName={teacher.firstName} lastName={teacher.lastName} className={teacher.className} deleteTeacher={deleteTeacher} teacher={teacher}/>)}
+            {teachers.map((teacher) => <AllTeachers key={teacher.id} id={teacher.id} firstName={teacher.firstName} lastName={teacher.lastName} className={teacher.className} deleteTeacher={deleteTeacher} teacher={teacher} editFirstName={editFirstName} editLastName={editLastName} editClassName={editClassName}/>)}
 
         </div>
     );
