@@ -1,5 +1,6 @@
 import './App.css';
-import MainDashboard from "./MainDashboard.js"
+// import MainDashboard from "./MainDashboard.js"
+import ClassPage from "./ClassPage.js"
 import { initializeApp } from "firebase/app"
 import { getFirestore } from "firebase/firestore";
 
@@ -19,7 +20,7 @@ function App() {
 
   return (
     <div className="App">
-      <MainDashboard />
+      <ClassPage />
     </div>
   );
 }
