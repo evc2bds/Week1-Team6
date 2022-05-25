@@ -1,10 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
-
 function AllTeachers(props) {
-    const textFieldRefEditFirst = useRef(null);
-    const textFieldRefEditLast = useRef(null);
-    const textFieldRefEditClass = useRef(null);
-
     return (
         <div className="teacher">
             <br></br>
@@ -14,7 +8,6 @@ function AllTeachers(props) {
             <input type="submit" onClick={() => props.editClass(props.id)} value="Edit Class Name" />
             <input type="submit" onClick={() => props.deleteTeacher(props.id)} value="Delete Teacher" />
             <br></br>
-            
         </div>
     )
 }
