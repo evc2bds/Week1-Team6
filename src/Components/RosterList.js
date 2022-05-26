@@ -20,14 +20,18 @@ function RosterList(props) {
         setStudents(x);
         }); 
     }
-    console.log(props.studentRoster[0])
-    if(!studentsInClass && props.studentRoster[0]) {
+    console.log(props.studentRoster[0]);
+    if(!studentsInClass && !props.studentRoster[0]) {
+        console.log("empty class")
+        setCurStudents([])
+        setRosterInfo(props.rosterInfo); 
+    }
+    if((!studentsInClass || studentsInClass.length==0) && props.studentRoster[0]) {
+        console.log("not empty class")
         setCurStudents(props.studentRoster);
         setRosterInfo(props.rosterInfo); 
     }
-    if(!studentsInClass && !props.studentRoster[0]) {
-        setCurStudents([])
-    }
+    
     useEffect(() => {
         getStudents();
     }, [db, props]);
@@ -38,6 +42,7 @@ function RosterList(props) {
                 curRoster = rosterInfo; 
             }
             console.log(curRoster); 
+            console.log(studentsInClass)
             const ID = classID;
             let studentPath = doc(db, 'students/'+student.id);
             curRoster.push(studentPath); 
@@ -66,7 +71,7 @@ function RosterList(props) {
             let newRoster = [];
             for(let x = 0; x < studentsInClass.length; x++) {
                 if(studentsInClass[x].id!=studentID) {
-                    newRoster.push(studentsInClass[x]);
+                    newRoster.push(rosterInfo[x]);
                 }
             }
             updateDoc(doc(db, "classes", ID), {
