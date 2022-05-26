@@ -1,17 +1,14 @@
 import './App.css';
-// import MainDashboard from "./MainDashboard.js"
 import ClassPage from "./ClassPage.js"
-import { initializeApp } from "firebase/app"
-import { getFirestore } from "firebase/firestore";
-import {db, firebaseApp} from "./firebase.js"
 import MainDashboard from "./MainDashboard.js"
-
+import { Link, Outlet } from 'react-router-dom';
 
 function App() {
 
   return (
     <div className="App">
       <MainDashboard />
+
     </div>
   );
 }

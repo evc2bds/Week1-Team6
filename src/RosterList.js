@@ -66,7 +66,7 @@ class RosterList extends React.Component{
     getStudentID = (student) => {
         let allStudentsInTheSchool = this.state.allStudents
         for(let x = 0; x < allStudentsInTheSchool.length; x++) {
-            if(student.fname==allStudentsInTheSchool[x].fname && student.GPA==allStudentsInTheSchool[x].GPA && student.lname==allStudentsInTheSchool[x].lname) {
+            if(student.fname===allStudentsInTheSchool[x].fname && student.GPA===allStudentsInTheSchool[x].GPA && student.lname===allStudentsInTheSchool[x].lname) {
                 return allStudentsInTheSchool[x].id; 
             }
         }
@@ -78,7 +78,7 @@ class RosterList extends React.Component{
             const studentID = this.getStudentID(student); 
             let newRoster = [];
             for(let x = 0; x < currentRoster.length; x++) {
-                if(currentRoster[x].id!=studentID) {
+                if(currentRoster[x].id!==studentID) {
                     newRoster.push(currentRoster[x]);
                 }
             }
@@ -88,7 +88,7 @@ class RosterList extends React.Component{
         }
     }
     equals(student1, student2) {
-        if(student1.GPA==student2.GPA && student1.fname==student2.fname && student1.lname==student2.lname) {
+        if(student1.GPA===student2.GPA && student1.fname===student2.fname && student1.lname===student2.lname) {
             return true; 
         }
         else {return false;}
@@ -157,7 +157,7 @@ class AddNewStudent extends React.Component {
         })
     }
     equals(student1, student2) {
-        if(student1.GPA==student2.GPA && student1.fname==student2.fname && student1.lname==student2.lname) {
+        if(student1.GPA===student2.GPA && student1.fname===student2.fname && student1.lname===student2.lname) {
             return true; 
         }
         else {return false;}

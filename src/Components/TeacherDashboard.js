@@ -15,7 +15,7 @@ function TeacherDashboard() {
         getDocs(collection(db, "Teachers")) //get collection
         .then((allTeachers) => { //format each teacher into an array
             allTeachers.forEach((teacher) => teachers.push({ id: teacher.id, ...teacher.data() }))
-            teachers.sort((a,b) => (a.lastName < b.lastName) ? 1:-1)
+            teachers.sort((a,b) => (a.lastName > b.lastName) ? 1:-1)
             setTeachers(teachers)
         })
     }, [db])
