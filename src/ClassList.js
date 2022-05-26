@@ -3,6 +3,7 @@ import db from "./firebase.js"
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 
 function ClassList() {
+    const array = [1, 2, 3]
     const[classesInfo, setClasses] = useState(); 
     const getClass = () => {
         const q = collection(db, "classes"); 
@@ -23,7 +24,7 @@ function ClassList() {
         console.log(classesInfo)
         return(
             <div>
-                {classesInfo.map((c) => <ClassBox/>)}    
+                {classesInfo.map((c) => <ClassBox class={c.id }/>)}    
             </div>
         );
     }

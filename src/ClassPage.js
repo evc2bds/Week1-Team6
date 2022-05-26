@@ -58,6 +58,7 @@ function ClassPage () {
         buildRoster(); 
     }
     if(curStudent && classInfo) {
+        console.log(curStudent); 
     return(
         <div>
             <MainHeader /> 
