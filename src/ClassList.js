@@ -23,7 +23,7 @@ function ClassList() {
         console.log(classesInfo)
         return(
             <div>
-                {classesInfo.map((c) => <ClassBox key={}/>)}    
+                {classesInfo.map((c) => <ClassBox/>)}    
             </div>
         );
     }

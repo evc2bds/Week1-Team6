@@ -1,17 +1,18 @@
 import './App.css';
-// import MainDashboard from "./MainDashboard.js"
+import MainDashboard from "./MainDashboard.js"
 import ClassPage from "./ClassPage.js"
 import { initializeApp } from "firebase/app"
 import { getFirestore } from "firebase/firestore";
 import {db, firebaseApp} from "./firebase.js"
 import ClassDashboard from "./ClassDashboard.js"
+import EventsDashboard from "./Components/EventsDashboard"
 
 
 function App() {
 
   return (
     <div className="App">
-      <ClassDashboard />
+      <EventsDashboard />
     </div>
   );
 }
