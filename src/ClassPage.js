@@ -5,15 +5,14 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import db from "./firebase.js"
 import RosterList from "./RosterList.js"
 
-function ClassPage () {
+function ClassPage (props) {
 
     const[classInfo, setClassInfo] = useState(); 
     const[teacherInfo, setTeacherInfo] = useState(); 
     const[curStudent, setCurStudent] = useState(); 
     const[allStudents, setAllStudents] = useState(); 
 
-    //this will later be passed as a prop down from the dashboard
-    const classID = "xo1tdfJStoQnXwKOCHV4"; 
+    const classID = props.classID; 
     const classRef = doc(db, "classes", classID); 
     const getClassInfo = () => {
         if(!classInfo) {
@@ -58,6 +57,7 @@ function ClassPage () {
         buildRoster(); 
     }
     if(curStudent && classInfo) {
+        console.log(curStudent); 
     return(
         <div>
             <MainHeader /> 
@@ -73,7 +73,7 @@ function ClassPage () {
             <div>
                 <MainHeader /> 
                 <h2 style={{fontFamily: "arial", fontSize: 32}}>Class Page for {className}</h2>
-                <h3 style={{fontFamily: "Times New Roman", fontsize: 26}}>Teacher: {teacherName}</h3>
+                <h3 style={{fontFamily: "arial", fontsize: 26}}>Teacher: {teacherName}</h3>
                 <h1>Currently Loading Roster...</h1>
             </div>
         ); 
