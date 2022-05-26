@@ -1,12 +1,15 @@
 function AllEvents(props) {
-    const date = props.eventDate;
-    const year = date.substring(0,4);
-    const monthDay = date.substring(5,10);
-    const time = date.substring(11);
+    const dateString = props.eventDate;
+    const year = dateString.substring(0,4);
+    const monthDay = dateString.substring(5,10);
+    const time = dateString.substring(11);
+    const endDate = props.eventDateEnd;
+    const endTime = endDate.substring(11);
+    console.log(typeof endDate)
     return (
         <div className="event">
             <br></br>
-            <p>{monthDay}-{year} at {time}: {props.eventName} at {props.eventLoc}</p>
+            <p>{monthDay}-{year} from {time} to {endTime}: {props.title}</p>
             <input type="submit" onClick={() => props.deleteEvent(props.id)} value="Delete Event" />
             <br></br>
 
