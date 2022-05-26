@@ -2,13 +2,31 @@ import React, {useState, useEffect, useRef} from 'react'
 import AllEvents from "./AllEvents.js"
 import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, deleteDoc, Timestamp } from "firebase/firestore";
 import db from "../firebase.js";
-import { FirebaseError } from 'firebase/app';
+import format from "date-fns/format";
+import getDay from "date-fns/getDay";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "../App.css";
+
+//declare localizer for format of date
+const locales = {
+    "en-US": require("date-fns/locale/en-US"),
+};
+const localizer = dateFnsLocalizer({
+    format,
+    parse,
+    startOfWeek,
+    getDay,
+    locales,
+});
 
 function EventDashboard() {
     const [events, setEvents] = useState([])
     const textFieldRefEvent = useRef(null);
     const textFieldRefDate = useRef(null);
-    const textFieldRefLocation = useRef(null);
+    const textFieldRefDateEnd = useRef(null);
 
     // Get previous responses on page load
     useEffect(() => {
@@ -36,9 +54,9 @@ function EventDashboard() {
     const addEvent = (e) => {
         e.preventDefault(); //no reloading the page
         const newEvent = {
-            eventName: textFieldRefEvent.current.value,
+            title: textFieldRefEvent.current.value,
             eventDate: textFieldRefDate.current.value,
-            eventLoc: textFieldRefLocation.current.value
+            eventDateEnd: textFieldRefDateEnd.current.value
         }
         addDoc(collection(db, "Events"), newEvent)
         .then((docRef) => {
@@ -46,29 +64,33 @@ function EventDashboard() {
         })
         .catch((e) => console.error(e))
         textFieldRefEvent.current.value = ""
-        textFieldRefDate.current.value = ""
-        textFieldRefLocation.current.value = ""
     }
 
+    console.log(events)
     return (
-        <div>
-            <br></br>
-            <form onSubmit={addEvent}>
-                <label for="eventName">Enter Event Name: </label>
-                <input id="eventName" type="text" ref={textFieldRefEvent} />
-                <p></p>
-
-                <label for="eventDate">Enter Event Date: </label>
-                <input id="eventDate" type="datetime-local" ref={textFieldRefDate} />
-                <p></p>
-
-                <label for="eventLoc">Enter Event Location: </label>
-                <input id="eventLoc" type="text" ref={textFieldRefLocation} />
-                <p></p>
-                <input type="submit" value="Add Event"/>
-            </form>
-
-            {events.map((event) => <AllEvents key={event.id} id={event.id} eventName={event.eventName} eventDate={event.eventDate} eventLoc={event.eventLoc} deleteEvent={deleteEvent}/>)}
+        <div className="App">
+        <h1>Event Calendar</h1>
+        <h4>Add New Event:</h4>
+            <div>
+                <form onSubmit={addEvent}>
+                    <label for="eventName">Name: </label>
+                    <input id="eventName" type="text" style={{ width: "20%", marginRight: "10px" }} ref={textFieldRefEvent} />
+                    <label for="eventStart">Start: </label>
+                    <input id="eventStart" type="datetime-local" style={{ width: "20%", marginRight: "10px" }} ref={textFieldRefDate} />
+                    <label for="eventEnd">End: </label>
+                    <input id="eventEnd" type="datetime-local" style={{ width: "20%", marginRight: "10px" }} ref={textFieldRefDateEnd} />
+                    <input type="submit" value="Add Event"/>
+                </form>
+            </div>
+            <Calendar 
+                localizer={localizer} 
+                events={events} 
+                startAccessor="eventDate" 
+                endAccessor="eventDateEnd" 
+                style={{ height: 500, margin: "50px" }}
+            />
+            <h2>All Events:</h2>
+            {events.map((event) => <AllEvents key={event.id} id={event.id} title={event.title} eventDate={event.eventDate} eventDateEnd={event.eventDateEnd} deleteEvent={deleteEvent}/>)}
         </div>
 
     )
