@@ -3,6 +3,7 @@ import './App.css';
 import MainHeader from "./MainHeader.js"
 import CurrentDay from "./CurrentDay.js"
 import ImportantLinks from "./ImportantLinks.js"
+import { Outlet, useLocation } from 'react-router-dom';
 
 
 class MainDashboard extends React.Component {
@@ -10,8 +11,10 @@ class MainDashboard extends React.Component {
         return(
             <div>
                 <MainHeader />
-                <CurrentDay />
                 <ImportantLinks />
+                <CurrentDay />
+                <Outlet/>
+                
             </div>
         );
     }

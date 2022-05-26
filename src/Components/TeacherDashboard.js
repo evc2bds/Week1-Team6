@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import AllTeachers from "./AllTeachers.js"
 import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 import db from "../firebase.js";
+import { Button } from '@mui/material';
 
 function TeacherDashboard() {
     //Firebase config 
@@ -108,7 +109,7 @@ function TeacherDashboard() {
                 <label for="className">Enter Teacher's Class Name: </label>
                 <input id="className" type="text" ref={textFieldRefClass} />
                 <p></p>
-                <input type="submit" value="Add Teacher"/>
+                <Button type="submit" variant='contained'>Add Teacher</Button>
             </form>
             <p>
                 To edit a teacher's first name, last name, or class, type your change into the 
