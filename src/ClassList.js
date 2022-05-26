@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import db from "./firebase.js"
 import { collection, getDocs, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {FormControl, Select, InputLabel, MenuItem, Button, TextField} from "@mui/material"; 
+import {Link} from "react-router-dom";
 
-function ClassList() {
+function ClassList(props) {
     const[classesInfo, setClasses] = useState(); 
     const[teachersInfo, setTeachers] = useState(); 
     const getTeachers = () => {
@@ -23,14 +24,17 @@ function ClassList() {
     const getClass = () => {
         const q = collection(db, "classes"); 
         let x = [];
+        let x2 = [];
         getDocs(q)
         .then((allDocs) => {
         allDocs.forEach((doc) => {
             let newClass = doc.data(); 
             newClass.id = doc.id; 
+            x2.push(doc.id); 
             x.push(newClass); 
         })
         setClasses(x); 
+        props.setClassIDList(x2); 
         }
         )
     }

@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {BrowserRouter, Routes, Route} from "react-router-dom"; 
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import MainDashboard from "./MainDashboard.js"
+import ClassDashboard from "./ClassDashboard.js"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <App />
 );
 
 // If you want to start measuring performance in your app, pass a function

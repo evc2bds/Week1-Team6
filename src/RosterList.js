@@ -8,7 +8,6 @@ function RosterList(props) {
     const [studentsInClass, setCurStudents] = useState();
     const [rosterInfo, setRosterInfo] = useState();
     const getStudents = () => {
-        if(props.studentRoster[0]) {
         const q = collection(db, "students");
         getDocs(q)
         .then((allDocs) => {
@@ -20,18 +19,25 @@ function RosterList(props) {
         })
         setStudents(x);
         }); 
-        }
     }
+    console.log(props.studentRoster[0])
     if(!studentsInClass && props.studentRoster[0]) {
         setCurStudents(props.studentRoster);
         setRosterInfo(props.rosterInfo); 
+    }
+    if(!studentsInClass && !props.studentRoster[0]) {
+        setCurStudents([])
     }
     useEffect(() => {
         getStudents();
     }, [db, props]);
     const addStudent = (student, currentRoster, classID) => {
         if(student) {
-            let curRoster = currentRoster; 
+            let curRoster = [];
+            if(studentsInClass) {
+                curRoster = studentsInClass; 
+            }
+            console.log(curRoster); 
             const ID = classID;
             let studentPath = doc(db, 'students/'+student.id);
             curRoster.push(studentPath); 
@@ -58,9 +64,9 @@ function RosterList(props) {
             const ID = classID;
             const studentID = getStudentID(student); 
             let newRoster = [];
-            for(let x = 0; x < currentRoster.length; x++) {
-                if(currentRoster[x].id!=studentID) {
-                    newRoster.push(currentRoster[x]);
+            for(let x = 0; x < studentsInClass.length; x++) {
+                if(studentsInClass[x].id!=studentID) {
+                    newRoster.push(studentsInClass[x]);
                 }
             }
             updateDoc(doc(db, "classes", ID), {
@@ -92,15 +98,16 @@ function RosterList(props) {
         return bool; 
     }
     console.log(studentsInClass); 
+    console.log(allStudents);   
     let newClassRoster = [];
-    if(allStudents && studentsInClass) {
+    if(allStudents) {
         for(let x = 0; x < studentsInClass.length; x++) {
             if(arrayIncludesValue(allStudents, studentsInClass[x])) {
                 newClassRoster.push()
             }
         }
     }
-    if(allStudents && studentsInClass){
+    if(allStudents){
         return(
             <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
                 {studentsInClass.map((student) => <StudentBox  classID={props.classID} rosterInfo={rosterInfo} deleteStudent={deleteStudent} key={student} student={student}/>)}
@@ -110,9 +117,10 @@ function RosterList(props) {
         );
     }
     else {
+        getStudents();
         return(
             <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
-                {props.studentRoster.map((student) => <StudentBox classID={props.classID} rosterInfo={rosterInfo} deleteStudent={deleteStudent} key={student} student={student}/>)}
+                {props.studentRoster.map((student) => <StudentBox classID={props.classID} rosterInfo={rosterInfo} deleteStudent={deleteStudent} key={student.id} student={student}/>)}
             </div>
         );
     }
