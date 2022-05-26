@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MainHeader from "./MainHeader.js"
 import { initializeApp } from "firebase/app"
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import db from "./firebase.js"
+import db from "../firebase.js"
 import RosterList from "./RosterList.js"
 
 function ClassPage (props) {

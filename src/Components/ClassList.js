@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import db from "./firebase.js"
+import db from "../firebase.js"
 import { collection, getDocs, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {FormControl, Select, InputLabel, MenuItem, Button, TextField} from "@mui/material"; 
 import {Link} from "react-router-dom";

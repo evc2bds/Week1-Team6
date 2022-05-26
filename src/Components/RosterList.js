@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {FormControl, Select, InputLabel, MenuItem, Button} from "@mui/material"; 
-import db from "./firebase.js"
+import db from "../firebase.js"
 import {getDocs, doc, collection, updateDoc} from "firebase/firestore";
 
 function RosterList(props) {    
@@ -82,7 +82,7 @@ function RosterList(props) {
             setRosterInfo(newRoster); 
         }
     }
-    equals(student1, student2) {
+    const equals = (student1, student2) => {
         if(student1.GPA===student2.GPA && student1.fname===student2.fname && student1.lname===student2.lname) {
             return true; 
         }

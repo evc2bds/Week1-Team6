@@ -7,6 +7,7 @@ import Error from "./Components/Error";
 import EventDashboard from './Components/EventDashboard';
 import StudentDirectory from './Components/StudentDirectory';
 import TeacherDashboard from './Components/TeacherDashboard';
+import ClassPage from "./Components/ClassPage"
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -15,14 +16,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-   <Routes>
-     <Route path="/" element={<App/>}>
+   {/* <Routes>
+     <Route path="maindashboard" element={<App/>}/>
       <Route path="teacherdashboard" element={<TeacherDashboard/>}/>
       <Route path="studentdashboard" element={<StudentDirectory/>}/>
       <Route path="events" element={<EventDashboard/>}/>
-     </Route>
      <Route path="*" element={<Error />}/>
-   </Routes>
+   </Routes> */}
+   <ClassPage classID={"clNAluBTYeRAfSIj2ZC9"} />
   
   </BrowserRouter>,
   root
