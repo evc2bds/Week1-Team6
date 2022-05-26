@@ -1,4 +1,5 @@
 // import React, { useRef} from 'react'
+import { Button, ButtonGroup } from '@mui/material';
 function Student(props) {
   // const textFieldRefEditFirst = useRef(null);
   // const textFieldRefEditLast = useRef(null);
@@ -6,13 +7,15 @@ function Student(props) {
     return (
       <div className="student">
       <br></br>
-      <p>Name: {props.lastName}, {props.firstName} | GPA: {props.stuGPA}</p>
-     
-        <input type="submit" onClick={() => props.editFirstName(props.id) } value="Edit First Name" />
-        <input type="submit" onClick={() => props.editLastName(props.id)} value="Edit Last Name" />
-        <input type="submit" onClick={() => props.editGPA(props.id)}  value="Edit GPA (4.0 scale)" />
-        <input type="submit" onClick={() => props.deleteStudent(props.id)} value="Delete Student" />
-      
+      <p >Name: {props.lastName}, {props.firstName} | GPA: {props.stuGPA}</p>
+        <div >
+          <ButtonGroup variant='outlined'>
+          <Button  onClick={() => props.editFirstName(props.id) }>Edit First Name</Button>
+          <Button  onClick={() => props.editLastName(props.id)} >Edit Last Name</Button>
+          <Button  onClick={() => props.editGPA(props.id)}  >Edit GPA (4.0 scale)</Button>
+          <Button  onClick={() => props.deleteStudent(props.id)}>Delete Student</Button>
+          </ButtonGroup>
+        </div>
       <br></br>
       
   </div>

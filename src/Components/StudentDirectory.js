@@ -1,20 +1,10 @@
 import Student from "./Student.js";
-import {initializeApp} from "firebase/app"
+import Button from '@mui/material/Button';
 import { getFirestore, collection, deleteDoc, addDoc, doc, getDocs, updateDoc, } from "firebase/firestore";
 import {useState, useEffect, useRef} from "react"
+import db from "../firebase.js";
 
-function StudentDirectory() {
-    const firebaseConfig = {
-        apiKey: process.env.REACT_APP_apiKey,
-        authDomain: process.env.REACT_APP_authDomain,
-        projectId: "week1-team6",
-        storageBucket: process.env.REACT_APP_storageBucket,
-        messagingSenderId: process.env.REACT_APP_messagingSenderId,
-        appId: process.env.REACT_APP_appId
-        };
-      const firebaseApp = initializeApp(firebaseConfig);
-      const db = getFirestore(firebaseApp)
-     
+function StudentDirectory() {     
       //initialize students
       const textFieldRefFirst = useRef(null);
       const textFieldRefLast = useRef(null);
@@ -34,7 +24,7 @@ function StudentDirectory() {
         }, [db])
 
         const addStudent = (s) => {
-            s.preventDefault();
+           s.preventDefault();
             //figure out how to enter multiple information for 1 student
             const newStudent = {
                 fname : textFieldRefFirst.current.value,
@@ -129,7 +119,7 @@ function StudentDirectory() {
                 <label for="stuGPA">Enter Student's GPA: </label>
                 <input id="stuGPA" type="text" ref={textFieldRefGPA} />
                 <p></p>
-                <input type="submit" value="Add Student"/>
+                <Button type="submit" variant='contained'>Add Student</Button>         
             </form>
             <p>
                 To edit a student's first name, last name, or GPA, type your change into the 
