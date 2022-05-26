@@ -3,6 +3,7 @@ import AllTeachers from "./AllTeachers.js"
 import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 import db from "../firebase.js";
 import { Button } from '@mui/material';
+import MainHeader from "./MainHeader.js"
 
 function TeacherDashboard() {
     //Firebase config 
@@ -96,6 +97,7 @@ function TeacherDashboard() {
 
     return (
         <div className="App">
+            <MainHeader />
             <br></br>
             <form onSubmit={addTeacher}>
                 <label for="firstName">Enter Teacher's First Name: </label>
