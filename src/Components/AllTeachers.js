@@ -1,12 +1,16 @@
+import { Button, ButtonGroup } from '@mui/material';
+
 function AllTeachers(props) {
     return (
         <div className="teacher">
             <br></br>
             <p>Name: {props.lastName}, {props.firstName} | Class: {props.className}</p>
-            <input type="submit" onClick={() => props.editFirstName(props.id)} value="Edit First Name" />
-            <input type="submit" onClick={() => props.editLastName(props.id)} value="Edit Last Name" />
-            <input type="submit" onClick={() => props.editClass(props.id)} value="Edit Class Name" />
-            <input type="submit" onClick={() => props.deleteTeacher(props.id)} value="Delete Teacher" />
+            <ButtonGroup variant='outlined'>
+            <Button  onClick={() => props.editFirstName(props.id) }>Edit First Name</Button>
+            <Button  onClick={() => props.editLastName(props.id)} >Edit Last Name</Button>
+            <Button  onClick={() => props.editGPA(props.id)}  >Edit Class</Button>
+            <Button  onClick={() => props.deleteTeacher(props.id)}>Delete Teacher</Button>
+            </ButtonGroup>
             <br></br>
         </div>
     )
