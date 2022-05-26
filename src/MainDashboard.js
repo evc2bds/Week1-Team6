@@ -5,11 +5,10 @@ import CurrentDay from "./CurrentDay.js"
 import ImportantLinks from "./ImportantLinks.js"
 import { Outlet, useLocation } from 'react-router-dom';
 
-
 class MainDashboard extends React.Component {
     render() {
         return(
-            <div>
+            <div style={{textAlign: "center"}}>
                 <MainHeader />
                 <ImportantLinks />
                 <CurrentDay />

@@ -1,18 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {FormControl, Select, InputLabel, MenuItem, Button} from "@mui/material"; 
 import db from "./firebase.js"
 import {getDocs, doc, collection, updateDoc} from "firebase/firestore";
 
-class RosterList extends React.Component{
-    constructor(props) {
-        super(props); 
-        this.state = {
-            allStudents: [],
-            studentsLoaded: false, 
-            changedStudent: false
-        }
-    }
-    componentDidMount() {
+function RosterList(props) {    
+    const [allStudents, setStudents] = useState();
+    const [studentsInClass, setCurStudents] = useState();
+    const [rosterInfo, setRosterInfo] = useState();
+    const getStudents = () => {
         const q = collection(db, "students");
         getDocs(q)
         .then((allDocs) => {
@@ -22,49 +17,41 @@ class RosterList extends React.Component{
             newVar.id = doc.id; 
             x.push(newVar)
         })
-        this.setState({
-            allStudents: x, 
-            studentsLoaded: true
-        }); 
+        setStudents(x);
         }); 
     }
-    componentDidUpdate() {
-        console.log("updating...")
-        console.log(this.state.changedStudent)
-        if(this.state.changedStudent) {
-            const q = collection(db, "students");
-            getDocs(q)
-            .then((allDocs) => {
-            let x = [];
-            allDocs.forEach((doc) => {
-                let newVar = doc.data(); 
-                newVar.id = doc.id; 
-                x.push(newVar)
-            })
-            .then(() => {this.setState({
-                allStudents: x, 
-                studentsLoaded: true,
-                changedStudent: false
-            })})
-            }); 
-            console.log("updated!");
-            console.log(this.state.changedStudent)
-        }
+    console.log(props.studentRoster[0])
+    if(!studentsInClass && props.studentRoster[0]) {
+        setCurStudents(props.studentRoster);
+        setRosterInfo(props.rosterInfo); 
     }
-    addStudent = (student, currentRoster, classID) => {
+    if(!studentsInClass && !props.studentRoster[0]) {
+        setCurStudents([])
+    }
+    useEffect(() => {
+        getStudents();
+    }, [db, props]);
+    const addStudent = (student, currentRoster, classID) => {
         if(student) {
-            let curRoster = currentRoster; 
+            let curRoster = [];
+            if(studentsInClass) {
+                curRoster = studentsInClass; 
+            }
+            console.log(curRoster); 
             const ID = classID;
             let studentPath = doc(db, 'students/'+student.id);
             curRoster.push(studentPath); 
             // console.log(curRoster); 
             updateDoc(doc(db, "classes", ID), {
                 roster: curRoster
-            }).then(this.setState({ changedStudent: true }));
+            }).then((q) => {getStudents()});
+            let newStudents = studentsInClass;
+            newStudents.push(student); 
+            setCurStudents(newStudents)
         }
     }
-    getStudentID = (student) => {
-        let allStudentsInTheSchool = this.state.allStudents
+    const getStudentID = (student) => {
+        let allStudentsInTheSchool = allStudents
         for(let x = 0; x < allStudentsInTheSchool.length; x++) {
             if(student.fname===allStudentsInTheSchool[x].fname && student.GPA===allStudentsInTheSchool[x].GPA && student.lname===allStudentsInTheSchool[x].lname) {
                 return allStudentsInTheSchool[x].id; 
@@ -72,19 +59,27 @@ class RosterList extends React.Component{
         }
         return null; 
     }
-    deleteStudent = (student, currentRoster, classID) => {
+    const deleteStudent = (student, currentRoster, classID) => {
         if(student) { 
             const ID = classID;
-            const studentID = this.getStudentID(student); 
+            const studentID = getStudentID(student); 
             let newRoster = [];
-            for(let x = 0; x < currentRoster.length; x++) {
-                if(currentRoster[x].id!==studentID) {
-                    newRoster.push(currentRoster[x]);
+            for(let x = 0; x < studentsInClass.length; x++) {
+                if(studentsInClass[x].id!=studentID) {
+                    newRoster.push(studentsInClass[x]);
                 }
             }
             updateDoc(doc(db, "classes", ID), {
                 roster: newRoster
-            }).then(this.setState({ changedStudent: true }));
+            }).then((dcdd) => {getStudents()});
+            let rosterWithDeletedStudent = []; 
+            for(let x = 0; x < studentsInClass.length; x++) {
+                if(studentsInClass[x] != student) {
+                    rosterWithDeletedStudent.push(studentsInClass[x])
+                }
+            }
+            setCurStudents(rosterWithDeletedStudent);
+            setRosterInfo(newRoster); 
         }
     }
     equals(student1, student2) {
@@ -93,39 +88,41 @@ class RosterList extends React.Component{
         }
         else {return false;}
     }
-    arrayIncludesValue(array, value) {
+    const arrayIncludesValue = (array, value) => {
         let bool = false; 
         for(let x = 0; x < array.length; x++) {
-            if(this.equals(array[x], value)) {
+            if(equals(array[x], value)) {
                 return true; 
             }
         }
         return bool; 
     }
-    render() {
-        const studentArray = this.props.studentRoster; 
-        for(let x = 0; x < studentArray.length; x++) {
-            if(!this.arrayIncludesValue(this.state.allStudents, studentArray[x])) {
-                studentArray.splice(x, 1);
+    console.log(studentsInClass); 
+    console.log(allStudents);   
+    let newClassRoster = [];
+    if(allStudents) {
+        for(let x = 0; x < studentsInClass.length; x++) {
+            if(arrayIncludesValue(allStudents, studentsInClass[x])) {
+                newClassRoster.push()
             }
         }
-        if(this.state.studentsLoaded){
-            return(
-                <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
-                    <p>{this.state.changedStudent.toString()}</p>
-                    {studentArray.map((student) => <StudentBox  classID={this.props.classID} rosterInfo={this.props.rosterInfo} deleteStudent={this.deleteStudent} key={student} student={student}/>)}
-                    <h3 style={{textAlign: "left", marginLeft: 10}}>Add New Student: </h3>
-                    <AddNewStudent classID={this.props.classID} rosterInfo={this.props.rosterInfo} addStudent={this.addStudent} allStudents={this.state.allStudents} currentStudents={studentArray}/>
-                </div>
-            );
-        }
-        else {
-            return(
-                <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
-                    {studentArray.map((student) => <StudentBox classID={this.props.classID} rosterInfo={this.props.rosterInfo} addStudent={this.deleteStudent} key={student} student={student}/>)}
-                </div>
-            );
-        }
+    }
+    if(allStudents){
+        return(
+            <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
+                {studentsInClass.map((student) => <StudentBox  classID={props.classID} rosterInfo={rosterInfo} deleteStudent={deleteStudent} key={student} student={student}/>)}
+                <h3 style={{textAlign: "left", marginLeft: 10}}>Add New Student: </h3>
+                <AddNewStudent classID={props.classID} rosterInfo={rosterInfo} addStudent={addStudent} allStudents={allStudents} currentStudents={studentsInClass}/>
+            </div>
+        );
+    }
+    else {
+        getStudents();
+        return(
+            <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
+                {props.studentRoster.map((student) => <StudentBox classID={props.classID} rosterInfo={rosterInfo} deleteStudent={deleteStudent} key={student.id} student={student}/>)}
+            </div>
+        );
     }
 }
 
@@ -177,15 +174,11 @@ class AddNewStudent extends React.Component {
         let notInClass = [];
         for(let x = 0; x < allStudentArray.length; x++) {
             if(!this.arrayIncludesValue(curStudentArray, allStudentArray[x])) {
-                console.log(allStudentArray[x].fname + " is not in the current students");
                 notInClass.push(allStudentArray[x]);
             }
         }
         console.log(notInClass); 
         if(notInClass[0]) {
-            // this.setState({
-            //     studentChosen: notInClass[0],
-            // });
             return(
                 <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <FormControl sx={{ m: 1, minWidth: 220 }}>
