@@ -34,8 +34,8 @@ function RosterList(props) {
     const addStudent = (student, currentRoster, classID) => {
         if(student) {
             let curRoster = [];
-            if(studentsInClass) {
-                curRoster = studentsInClass; 
+            if(rosterInfo) {
+                curRoster = rosterInfo; 
             }
             console.log(curRoster); 
             const ID = classID;
