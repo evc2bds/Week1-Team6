@@ -2,19 +2,9 @@ import Student from "./Student.js";
 import {initializeApp} from "firebase/app"
 import { getFirestore, collection, deleteDoc, addDoc, doc, getDocs, updateDoc, } from "firebase/firestore";
 import {useState, useEffect, useRef} from "react"
+import db from "../firebase.js";
 
-function StudentDirectory() {
-    const firebaseConfig = {
-        apiKey: process.env.REACT_APP_apiKey,
-        authDomain: process.env.REACT_APP_authDomain,
-        projectId: "week1-team6",
-        storageBucket: process.env.REACT_APP_storageBucket,
-        messagingSenderId: process.env.REACT_APP_messagingSenderId,
-        appId: process.env.REACT_APP_appId
-        };
-      const firebaseApp = initializeApp(firebaseConfig);
-      const db = getFirestore(firebaseApp)
-     
+function StudentDirectory() {     
       //initialize students
       const textFieldRefFirst = useRef(null);
       const textFieldRefLast = useRef(null);
