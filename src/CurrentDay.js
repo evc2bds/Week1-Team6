@@ -19,7 +19,7 @@ class CurrentDayList extends React.Component {
         //TODO: FILL THE ABOVE ARRAY WITH STUDENTS FROM THE DATABASE
         let studentsWithBirthdayToday = [];
         for(let x = 0; x < students.length; x++) {
-            if(students[x].birthday == todayString) {
+            if(students[x].birthday === todayString) {
                 studentsWithBirthdayToday.push(students[x]);
             }
         }
@@ -27,7 +27,7 @@ class CurrentDayList extends React.Component {
         //TODO: FILL THE ABOVE ARRAY WITH EVENTS FROM THE DATABASE
         let eventsToday = []; 
         for(let x = 0; x < events.length; x++) {
-            if(events[x].date == todayString) {
+            if(events[x].date === todayString) {
                 eventsToday.push(events[x]);
             }
         }

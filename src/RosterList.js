@@ -53,7 +53,7 @@ function RosterList(props) {
     const getStudentID = (student) => {
         let allStudentsInTheSchool = allStudents
         for(let x = 0; x < allStudentsInTheSchool.length; x++) {
-            if(student.fname==allStudentsInTheSchool[x].fname && student.GPA==allStudentsInTheSchool[x].GPA && student.lname==allStudentsInTheSchool[x].lname) {
+            if(student.fname===allStudentsInTheSchool[x].fname && student.GPA===allStudentsInTheSchool[x].GPA && student.lname===allStudentsInTheSchool[x].lname) {
                 return allStudentsInTheSchool[x].id; 
             }
         }
@@ -82,8 +82,8 @@ function RosterList(props) {
             setRosterInfo(newRoster); 
         }
     }
-    const equals = (student1, student2) => {
-        if(student1.GPA==student2.GPA && student1.fname==student2.fname && student1.lname==student2.lname) {
+    equals(student1, student2) {
+        if(student1.GPA===student2.GPA && student1.fname===student2.fname && student1.lname===student2.lname) {
             return true; 
         }
         else {return false;}
@@ -154,7 +154,7 @@ class AddNewStudent extends React.Component {
         })
     }
     equals(student1, student2) {
-        if(student1.GPA==student2.GPA && student1.fname==student2.fname && student1.lname==student2.lname) {
+        if(student1.GPA===student2.GPA && student1.fname===student2.fname && student1.lname===student2.lname) {
             return true; 
         }
         else {return false;}
