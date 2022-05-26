@@ -7,6 +7,7 @@ function ClassDashboard() {
         <div>
             <MainHeader />
             <h3 style={{fontFamily: "arial", fontSize: 24}}>Class Directory</h3>
+            <p>Go to class pages to edit rosters. </p>
             <ClassList />
         </div>
     );

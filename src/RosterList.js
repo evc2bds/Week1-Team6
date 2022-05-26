@@ -171,9 +171,6 @@ class AddNewStudent extends React.Component {
         }
         console.log(notInClass); 
         if(notInClass[0]) {
-            // this.setState({
-            //     studentChosen: notInClass[0],
-            // });
             return(
                 <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <FormControl sx={{ m: 1, minWidth: 220 }}>

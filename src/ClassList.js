@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from "react";
 import db from "./firebase.js"
 import { collection, getDocs, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
-import {FormControl, Select, InputLabel, MenuItem, Button} from "@mui/material"; 
+import {FormControl, Select, InputLabel, MenuItem, Button, TextField} from "@mui/material"; 
 
 function ClassList() {
     const[classesInfo, setClasses] = useState(); 
+    const[teachersInfo, setTeachers] = useState(); 
+    const getTeachers = () => {
+        const q = collection(db, "Teachers"); 
+        let x = [];
+        getDocs(q)
+        .then((allDocs) => {
+        allDocs.forEach((doc) => {
+            let newTeacher = doc.data(); 
+            newTeacher.id = doc.id; 
+            x.push(newTeacher); 
+        })
+        setTeachers(x); 
+        }
+        )
+    }
     const getClass = () => {
         const q = collection(db, "classes"); 
         let x = [];
@@ -32,14 +47,15 @@ function ClassList() {
         deleteDoc(doc(db, "classes", deletedClassID)).then((res) => {getClass()})
     }
     useEffect(() => {
-        getClass();     
+        getClass();    
+        getTeachers();  
     }, [db])
-    if(classesInfo) { 
+    if(classesInfo && teachersInfo) { 
         return(
-            <div>
-                {/* <ClassBox class={classesInfo[0].id}/> */}
+            <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
                 {classesInfo.map((c) => <ClassBox key={c.id} class={c} deleteClass={deleteClass}/>)} 
-                <AddNewClass />   
+                <h3 style={{textAlign: "left", marginLeft: 10}}>Add New Class: </h3>
+                <AddNewClass teachers={teachersInfo} addClass={addClass}/>   
             </div>
         );
     }
@@ -83,11 +99,10 @@ class ClassBox extends React.Component {
             })
         })
     }
-    
     render() {
         let teacherName = "Loading..."; 
         if(this.state.teacherDataLoaded) {
-            teacherName = this.state.teacherData.firstName
+            teacherName = this.state.teacherData.firstName + " " + this.state.teacherData.lastName;
         }
     return(
         <div style={{borderStyle: "solid", borderWidth: 1, margin: 4, marginRight: 8, marginLeft: 8}}> 
@@ -101,7 +116,72 @@ class ClassBox extends React.Component {
 
 class AddNewClass extends React.Component{
     constructor(props) {
-        
+        super(props)
+        this.state = {
+            newName: "",
+            newTeacherID: "",
+            errorState: false,
+            dropdownError: false,
+        }
+    }
+    handleChange = (event) => {
+        this.setState({
+            newTeacherID: event.target.value,
+        })
+    }
+    handleTextChange = (event) => {
+        this.setState({
+            newName: event.target.value,
+        })
+    }
+    render() {
+        const teacherArray = this.props.teachers;
+        return(
+            <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                <TextField style={{margin: 5}} id="class-name" label="Class Name" variant="standard" error={this.state.errorState} onChange={this.handleTextChange}/>
+                <FormControl sx={{ m: 1, minWidth: 220 }} error={this.state.dropdownError}>
+                    <InputLabel id="choose-teacher-label">Select Teacher</InputLabel>
+                    <Select
+                        labelId="choose-teacher-label"
+                        id="choose-teacher"
+                        value={this.state.newTeacherID}
+                        label="Select Class's Teacher"
+                        onChange={this.handleChange}>
+                        {teacherArray.map((teacher) => <MenuItem key={teacher.id} value={teacher.id}>{teacher.firstName + " " + teacher.lastName}</MenuItem>)}
+                    </Select>
+                </FormControl>
+                <Button variant="outlined" onClick={() => {
+                    if(this.state.newName=="") {
+                        this.setState({
+                            errorState: true
+                        })
+                    }
+                    else {
+                        this.setState({
+                            errorState: false
+                        })
+                    }
+                    if (this.state.newTeacherID=="") {
+                        this.setState({
+                            dropdownError: true
+                        })
+                    }
+                    else {
+                        this.setState({
+                            dropdownError: false
+                        })
+                    }
+                    if((this.state.newTeacherID!="") && (this.state.newName!="")) {
+                        this.props.addClass(this.state.newName, this.state.newTeacherID)
+                        this.setState({
+                            newTeacherID: "",
+                            errorState: false,
+                            dropdownError: false,
+                        })
+                    }
+                }}>Create</Button>
+            </div>
+        );
     }
 }
 
