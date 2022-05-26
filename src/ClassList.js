@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import db from "./firebase.js"
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
+import {FormControl, Select, InputLabel, MenuItem, Button} from "@mui/material"; 
 
 function ClassList() {
-    const array = [1, 2, 3]
     const[classesInfo, setClasses] = useState(); 
     const getClass = () => {
         const q = collection(db, "classes"); 
@@ -11,20 +11,35 @@ function ClassList() {
         getDocs(q)
         .then((allDocs) => {
         allDocs.forEach((doc) => {
-            let newVar = doc.data(); 
-            newVar.id = doc.id; 
-            x.push(newVar)
-        })})
-        setClasses(x);
+            let newClass = doc.data(); 
+            newClass.id = doc.id; 
+            x.push(newClass); 
+        })
+        setClasses(x); 
+        }
+        )
+    }
+    const addClass = (newClassName, newClassTeacherID) => {
+        const teacherPath = doc(db, 'Teachers/'+newClassTeacherID);
+        const newClassRef = doc(collection(db, "classes"));
+        setDoc(newClassRef, {
+            name: newClassName,
+            teacher: teacherPath,
+            roster: []
+        }).then((res) => {getClass()})
+    }
+    const deleteClass = (deletedClassID) => {
+        deleteDoc(doc(db, "classes", deletedClassID)).then((res) => {getClass()})
     }
     useEffect(() => {
         getClass();     
     }, [db])
     if(classesInfo) { 
-        console.log(classesInfo)
         return(
             <div>
-                {classesInfo.map((c) => <ClassBox class={c.id }/>)}    
+                {/* <ClassBox class={classesInfo[0].id}/> */}
+                {classesInfo.map((c) => <ClassBox key={c.id} class={c} deleteClass={deleteClass}/>)} 
+                <AddNewClass />   
             </div>
         );
     }
@@ -51,28 +66,42 @@ class ClassBox extends React.Component {
     //     }
     // }
 
-    // useEffect(() => {
-    //     getTeacher(); 
-    // }, [db])
-    // let teacherName = "Loading..."; 
-    // if(!teacher) {
-    //     getTeacher(); 
-    // }
-    // else{
-    //     teacherName = teacher.firstName; 
-    // }
+    constructor(props) {
+        super(props)
+        this.state = {
+            teacherData: null,
+            teacherDataLoaded: false
+        }
+    }
+    componentDidMount() {
+        const teacherID = this.props.class.teacher._key.path.segments[6];
+        getDoc(doc(db, "Teachers", teacherID))
+        .then((res) => {
+            this.setState({
+                teacherData: res.data(),
+                teacherDataLoaded: true
+            })
+        })
+    }
+    
     render() {
+        let teacherName = "Loading..."; 
+        if(this.state.teacherDataLoaded) {
+            teacherName = this.state.teacherData.firstName
+        }
     return(
-        // <div style={{borderStyle: "solid", borderWidth: 1, margin: 4, marginRight: 8, marginLeft: 8}}> 
-        //     <p>test</p>
-        //     {/* <h5 style={{textAlign: "left", fontSize: 20, margin: 10}}>{propsClass.name}</h5> */}
-        //     {/* <p style={{textAlign: "left", fontSize: 16, margin: 40}}>Teacher: {teacherName}</p> */}
-        //     {/* <Button variant="outlined" color="error" style={{alignContent: "right", marginBottom: 10}} onClick={() => this.props.deleteStudent(this.props.student, this.props.rosterInfo, this.props.classID)}>Remove from Class</Button> */}
-        // </div>
-        <div>
-            <p>hi2</p>
+        <div style={{borderStyle: "solid", borderWidth: 1, margin: 4, marginRight: 8, marginLeft: 8}}> 
+            <h5 style={{textAlign: "left", fontSize: 20, margin: 10}}>{this.props.class.name}</h5>
+            <p style={{textAlign: "left", fontSize: 16, margin: 40}}>Teacher: {teacherName}</p>
+            <Button variant="outlined" color="error" style={{alignContent: "right", marginBottom: 10}} onClick={() => this.props.deleteClass(this.props.class.id)}>Delete Class</Button>
         </div>
     );
+    }
+}
+
+class AddNewClass extends React.Component{
+    constructor(props) {
+        
     }
 }
 

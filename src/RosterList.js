@@ -58,16 +58,11 @@ function RosterList(props) {
             const ID = classID;
             const studentID = getStudentID(student); 
             let newRoster = [];
-            console.log("current roster:")
-            console.log(currentRoster)
-            console.log("id to be deleted: " + studentID)
             for(let x = 0; x < currentRoster.length; x++) {
                 if(currentRoster[x].id!=studentID) {
                     newRoster.push(currentRoster[x]);
                 }
             }
-            console.log("new roster: "); 
-            console.log(newRoster)
             updateDoc(doc(db, "classes", ID), {
                 roster: newRoster
             }).then((dcdd) => {getStudents()});
