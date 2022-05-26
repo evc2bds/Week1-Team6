@@ -73,7 +73,7 @@ function ClassPage () {
             <div>
                 <MainHeader /> 
                 <h2 style={{fontFamily: "arial", fontSize: 32}}>Class Page for {className}</h2>
-                <h3 style={{fontFamily: "Times New Roman", fontsize: 26}}>Teacher: {teacherName}</h3>
+                <h3 style={{fontFamily: "arial", fontsize: 26}}>Teacher: {teacherName}</h3>
                 <h1>Currently Loading Roster...</h1>
             </div>
         ); 
