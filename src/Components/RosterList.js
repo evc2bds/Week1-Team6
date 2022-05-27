@@ -88,12 +88,14 @@ function RosterList(props) {
         }
     }
     const equals = (student1, student2) => {
+        console.log(student1, student2); 
         if(student1.GPA===student2.GPA && student1.fname===student2.fname && student1.lname===student2.lname) {
             return true; 
         }
         else {return false;}
     }
     const arrayIncludesValue = (array, value) => {
+        console.log(value);
         let bool = false; 
         for(let x = 0; x < array.length; x++) {
             if(equals(array[x], value)) {
@@ -106,8 +108,10 @@ function RosterList(props) {
     console.log(allStudents);   
     let newClassRoster = [];
     if(allStudents) {
-        for(let x = 0; x < studentsInClass.length; x++) {
-            if(arrayIncludesValue(allStudents, studentsInClass[x])) {
+        let studentsDefined = []; 
+        for(let x =0; x < studentsInClass.length; x++) {if(studentsInClass[x]) {studentsDefined.push(studentsInClass[x])}}
+        for(let x = 0; x < studentsDefined.length; x++) {
+            if(arrayIncludesValue(allStudents, studentsDefined[x])) {
                 newClassRoster.push()
             }
         }

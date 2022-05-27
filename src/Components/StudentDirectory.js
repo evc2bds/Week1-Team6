@@ -46,7 +46,7 @@ function StudentDirectory() {
             const newStudent = {
                 fname : textFieldRefFirst.current.value,
                 lname : textFieldRefLast.current.value,
-                GPA : textFieldRefGPA.current.value,
+                GPA : parseFloat(textFieldRefGPA.current.value),
                 bday: textFieldRefBday.current.value,
             }
             addDoc(collection(db, "students"), newStudent)//add the new student
@@ -57,7 +57,7 @@ function StudentDirectory() {
 
             textFieldRefFirst.current.value = ""
             textFieldRefLast.current.value = ""
-            textFieldRefGPA.current.value = ""
+            textFieldRefGPA.current.value = 0
             textFieldRefBday.current.value = ""
 
         }
@@ -110,7 +110,7 @@ function StudentDirectory() {
     
         const editGPA = (stuID) => {
             updateDoc(doc(db, "students", stuID), {
-                GPA: textFieldRefGPA.current.value
+                GPA: parseFloat(textFieldRefGPA.current.value)
             })
             .then((docRef) => {
                 const tempStudents = [...students]
@@ -120,7 +120,7 @@ function StudentDirectory() {
                 setStudents(tempStudents) //update state
             })
             .catch((e) => console.error(e))
-            textFieldRefGPA.current.value=""
+            textFieldRefGPA.current.value=0;
         }
         const editBirthday = (stuID) => {
             updateDoc(doc(db, "students", stuID), {
