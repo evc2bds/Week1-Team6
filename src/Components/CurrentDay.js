@@ -14,6 +14,23 @@ class CurrentDay extends React.Component {
 }
 
 class CurrentDayList extends React.Component {
+    constructor(props) {
+        super(props); 
+        this.state = {
+            events: null
+        }
+    }
+    componentDidMount() {
+        getDocs(collection(db, "Events")) //get collection
+        .then((allEvents) => { //format each event into an array
+            let x = [];
+            allEvents.forEach((event) => x.push({ id: event.id, ...event.data() }))
+            x.sort((a,b) => (a.eventDate > b.eventDate) ? 1:-1)
+            this.setState({
+                events: x
+            }); 
+        })
+    }
     render() {
         const today = new Date(); 
         // const todayString = String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0') + "-" + today.getFullYear();
@@ -32,30 +49,24 @@ class CurrentDayList extends React.Component {
                 studentsWithBirthdayToday.push(students[x]);
             }
         }
-        let events = []; 
         //fill array with events from the database
-        getDocs(collection(db, "Events")) //get collection
-        .then((allEvents) => { //format each event into an array
-            allEvents.forEach((event) => events.push({ id: event.id, ...event.data() }))
-            events.sort((a,b) => (a.eventDate > b.eventDate) ? 1:-1)
-        })
-
-        if (events) {
-            console.log(events)
-        }
 
         let eventsToday = []; 
-        for(let x = 0; x < events.length; x++) {
-            if(events[x].eventDate === todayString) {
-                eventsToday.push(events[x]);
+        if(this.state.events) {
+            for(let x = 0; x < this.state.events.length; x++) {
+                if(this.state.events[x].eventDate.substring(0,10) == todayString) { 
+                    eventsToday.push(this.state.events[x]);
+                }
             }
         }
+        if(this.state.events) {
         return (
             <div style={{borderThickness: 1, borderStyle: "solid", margin: 30,}}>
                 {/* <StudentBirthdays birthdays={studentsWithBirthdayToday}/> */}
                 <SchoolEvents events={eventsToday}/>
             </div>
         );
+        }
     }
 }
 
@@ -86,6 +97,7 @@ class CurrentDayList extends React.Component {
 class SchoolEvents extends React.Component {
     render() {
         const todaysEvents = this.props.events; 
+        console.log(todaysEvents); 
         if(!todaysEvents[0]) {
             return(
                 <div>
