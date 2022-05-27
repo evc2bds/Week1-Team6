@@ -12,7 +12,6 @@ function AllEvents(props) {
             <p>{monthDay}-{year} from {time} to {endTime}: {props.title}</p>
             <input type="submit" onClick={() => props.deleteEvent(props.id)} value="Delete Event" />
             <br></br>
-
         </div>
     )
 }

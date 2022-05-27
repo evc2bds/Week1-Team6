@@ -66,7 +66,6 @@ function EventDashboard() {
         textFieldRefEvent.current.value = ""
     }
 
-    console.log(events)
     return (
         <div className="App">
         <h1>Event Calendar</h1>
@@ -92,9 +91,6 @@ function EventDashboard() {
             <h2>All Events:</h2>
             {events.map((event) => <AllEvents key={event.id} id={event.id} title={event.title} eventDate={event.eventDate} eventDateEnd={event.eventDateEnd} deleteEvent={deleteEvent}/>)}
         </div>
-
     )
-
-
 }
 export default EventDashboard;
