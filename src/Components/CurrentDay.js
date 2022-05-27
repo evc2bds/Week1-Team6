@@ -17,7 +17,8 @@ class CurrentDayList extends React.Component {
     constructor(props) {
         super(props); 
         this.state = {
-            events: null
+            events: null,
+            birthdays: null
         }
     }
     componentDidMount() {
@@ -31,26 +32,37 @@ class CurrentDayList extends React.Component {
             }); 
         })
 
-        
+        getDocs(collection(db, "students")) //grab collection
+        .then((allStudents)=>{
+            let i = [];
+            allStudents.forEach((student)=>i.push({ id: student.id, ...student.data()}))
+            i.sort((a,b) => (a.lname > b.lname) ? 1:-1)
+            this.setState({
+                birthdays: i
+            });
+        })
     }
     render() {
         const today = new Date(); 
         // const todayString = String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0') + "-" + today.getFullYear();
         const todayString = String(today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0')) + "-" + String(today.getDate()).padStart(2, '0');
-        let students = [];
-        //fill array with students from database
-        getDocs(collection(db, "students")) //grab collection
-        .then((allStudents)=>{
-            allStudents.forEach((student)=>students.push({ id: student.id, ...student.data()}))
-            students.sort((a,b) => (a.lname > b.lname) ? 1:-1)
-        })
+        // let students = [];
+        // //fill array with students from database
+        // getDocs(collection(db, "students")) //grab collection
+        // .then((allStudents)=>{
+        //     allStudents.forEach((student)=>students.push({ id: student.id, ...student.data()}))
+        //     students.sort((a,b) => (a.lname > b.lname) ? 1:-1)
+        // })
         
         let studentsWithBirthdayToday = [];
-        for(let x = 0; x < students.length; x++) {
-            if(students[x].birthday === todayString) {
-                studentsWithBirthdayToday.push(students[x]);
+        if(this.state.birthdays) {
+            for(let x = 0; x < this.state.birthdays.length; x++) {
+                if(this.state.birthdays[x].bday === todayString) {
+                    studentsWithBirthdayToday.push(this.state.birthdays[x]);
+                }
             }
         }
+        
         //fill array with events from the database
 
         let eventsToday = []; 
@@ -64,7 +76,7 @@ class CurrentDayList extends React.Component {
         if(this.state.events) {
         return (
             <div style={{borderThickness: 1, borderStyle: "solid", margin: 30,}}>
-                {/* <StudentBirthdays birthdays={studentsWithBirthdayToday}/> */}
+                <StudentBirthdays birthdays={studentsWithBirthdayToday}/>
                 <SchoolEvents events={eventsToday}/>
             </div>
         );
@@ -72,29 +84,30 @@ class CurrentDayList extends React.Component {
     }
 }
 
-// class StudentBirthdays extends React.Component{
-//     render() {
-//         const birthdayArray = this.props.birthdays;
-//         if(!birthdayArray[0]) {
-//             return(
-//                 <div>
-//                     <h3 style={{fontSize: 24}}>Student Birthdays</h3>
-//                     <p style={{textAlign: "left", margin: 15, fontSize: 18}}>No student has a birthday today.</p>
-//                 </div>
-//             );
-//         }
-//         else {
-//             return(
-//                 <div>
-//                     <h3>Student Birthdays</h3>
-//                     <ul>
-//                     {birthdayArray.map((student) => <li>{student.name} has a birthday today!</li>)}
-//                     </ul>
-//                 </div>
-//             );
-//         }
-//     }
-// }
+class StudentBirthdays extends React.Component{
+    render() {
+        const birthdayArray = this.props.birthdays;
+        console.log(birthdayArray);
+        if(!birthdayArray[0]) {
+            return(
+                <div>
+                    <h3 style={{fontSize: 24}}>Student Birthdays</h3>
+                    <p style={{textAlign: "left", margin: 15, fontSize: 18}}>No student has a birthday today.</p>
+                </div>
+            );
+        }
+        else {
+            return(
+                <div>
+                    <h3>Student Birthdays</h3>
+                    <ul>
+                    {birthdayArray.map((student) => <li>{student.fname} has a birthday today!</li>)}
+                    </ul>
+                </div>
+            );
+        }
+    }
+}
 
 class SchoolEvents extends React.Component {
     render() {
