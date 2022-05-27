@@ -57,7 +57,7 @@ class CurrentDayList extends React.Component {
         let studentsWithBirthdayToday = [];
         if(this.state.birthdays) {
             for(let x = 0; x < this.state.birthdays.length; x++) {
-                if(this.state.birthdays[x].bday === todayString) {
+                if(this.state.birthdays[x].bday.substring(5, 10) == todayString.substring(5, 10)) {
                     studentsWithBirthdayToday.push(this.state.birthdays[x]);
                 }
             }
@@ -101,7 +101,7 @@ class StudentBirthdays extends React.Component{
                 <div>
                     <h3>Student Birthdays</h3>
                     <ul>
-                    {birthdayArray.map((student) => <li>{student.fname} has a birthday today!</li>)}
+                    {birthdayArray.map((student) => <li style={{textAlign: "left", margin: 15, fontSize: 18}}>{student.fname} has a birthday today!</li>)}
                     </ul>
                 </div>
             );
@@ -126,7 +126,7 @@ class SchoolEvents extends React.Component {
                 <div>
                     <h3>School Events</h3>
                     <ul>
-                    {todaysEvents.map((event) => <li>{event.title} is happening today!</li>)}
+                    {todaysEvents.map((event) => <li style={{textAlign: "left", margin: 15, fontSize: 18}}>{event.title} is happening today!</li>)}
                     </ul>
                 </div>
             );
