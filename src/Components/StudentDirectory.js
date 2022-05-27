@@ -144,14 +144,15 @@ function StudentDirectory() {
             <form onSubmit={addStudent}>
                 <label for="firstName">Enter Student's First Name: </label>
                 <input id="firstName" type="text" ref={textFieldRefFirst} />{" "}
-                
+                <p></p>
 
                 <label for="lastName">Enter Student's Last Name: </label>
                 <input id="lastName" type="text" ref={textFieldRefLast} /> {" "}
-                
+                <p></p>
 
                 <label for="stuGPA">Enter Student's GPA: </label>
                 <input id="stuGPA" type="text" ref={textFieldRefGPA} /> {" "}
+                <p></p>
 
                 <label for="birthday">Birthday: </label>
                 <input id="birthday" type="date" style={{ width: "20%", marginRight: "10px" }} ref={textFieldRefBday} />
