@@ -97,7 +97,7 @@ function TeacherDashboard() {
 
     return (
         <div className="App">
-            <MainHeader />
+            <MainHeader curURL={"teacherdashboard"}/>
             <br></br>
             <form onSubmit={addTeacher}>
                 <label for="firstName">Enter Teacher's First Name: </label>
