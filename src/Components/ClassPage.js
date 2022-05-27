@@ -13,6 +13,7 @@ function ClassPage (props) {
     const[allStudents, setAllStudents] = useState(); 
 
     const classID = props.classID; 
+    console.log(classID); 
     const classRef = doc(db, "classes", classID); 
     const getClassInfo = () => {
         if(!classInfo) {
@@ -31,6 +32,7 @@ function ClassPage (props) {
         if(classInfo && !curStudent) {
             let roster = []; 
             for(let x = 0; x < classInfo.roster.length; x++) {
+                console.log(classInfo.roster)
                 let studentID = classInfo.roster[x]._key.path.segments[6]; 
                 getDoc(doc(db, "students", studentID)).then((res) => roster.push(res.data()))
             }
