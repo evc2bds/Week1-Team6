@@ -13,6 +13,7 @@ function ClassPage (props) {
     const[allStudents, setAllStudents] = useState(); 
 
     const classID = props.classID; 
+    console.log(classID); 
     const classRef = doc(db, "classes", classID); 
     const getClassInfo = () => {
         if(!classInfo) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import db from "../firebase.js"
 import { collection, getDocs, getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 import {FormControl, Select, InputLabel, MenuItem, Button, TextField} from "@mui/material"; 
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 function ClassList(props) {
     const[classesInfo, setClasses] = useState(); 
@@ -34,7 +34,6 @@ function ClassList(props) {
             x.push(newClass); 
         })
         setClasses(x); 
-        props.setClassIDList(x2); 
         }
         )
     }
@@ -54,10 +53,15 @@ function ClassList(props) {
         getClass();    
         getTeachers();  
     }, [db])
+    let navigate = useNavigate(); 
+    const goToPage = (IDPassed) => {
+        let path = IDPassed; 
+        navigate(path); 
+    }
     if(classesInfo && teachersInfo) { 
         return(
-            <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10}}>
-                {classesInfo.map((c) => <ClassBox key={c.id} class={c} deleteClass={deleteClass}/>)} 
+            <div style={{borderStyle: "dashed", borderWidth: 2, margin: 10, textAlign: "center"}}>
+                {classesInfo.map((c) => <ClassBox key={c.id} class={c} deleteClass={deleteClass} goToPage={goToPage}/>)} 
                 <h3 style={{textAlign: "left", marginLeft: 10}}>Add New Class: </h3>
                 <AddNewClass teachers={teachersInfo} addClass={addClass}/>   
             </div>
@@ -71,20 +75,6 @@ function ClassList(props) {
 }
 
 class ClassBox extends React.Component {
-    // const[teacher, setTeacher] = useState(); 
-    // console.log(propsClass);
-    // const getTeacher = () => {
-    //     console.log("running getTeacher")
-    //     console.log(teacher)
-    //     if(propsClass && !teacher) { 
-    //         console.log("still running")  
-    //         const teacherID = propsClass.propsClass.teacher._key.path.segments[6];
-    //         console.log(teacherID);
-    //         console.log(teacher);
-    //         getDoc(doc(db, "Teachers", teacherID))
-    //         .then((res) => setTeacher(res.data()))
-    //     }
-    // }
 
     constructor(props) {
         super(props)
@@ -112,7 +102,8 @@ class ClassBox extends React.Component {
         <div style={{borderStyle: "solid", borderWidth: 1, margin: 4, marginRight: 8, marginLeft: 8}}> 
             <h5 style={{textAlign: "left", fontSize: 20, margin: 10}}>{this.props.class.name}</h5>
             <p style={{textAlign: "left", fontSize: 16, margin: 40}}>Teacher: {teacherName}</p>
-            <Button variant="outlined" color="error" style={{alignContent: "right", marginBottom: 10}} onClick={() => this.props.deleteClass(this.props.class.id)}>Delete Class</Button>
+            <Button variant="outlined" style={{alignContent: "right", marginBottom: 10, margin: 5}} onClick={() => {this.props.goToPage(this.props.class.id)}}>Go to Page</Button>
+            <Button variant="outlined" color="error" style={{alignContent: "right", marginBottom: 10, margin: 5}} onClick={() => this.props.deleteClass(this.props.class.id)}>Delete Class</Button>
         </div>
     );
     }
