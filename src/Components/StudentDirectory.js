@@ -4,12 +4,28 @@ import { getFirestore, collection, deleteDoc, addDoc, doc, getDocs, updateDoc, }
 import {useState, useEffect, useRef} from "react"
 import db from "../firebase.js";
 import MainHeader from "./MainHeader.js"
+import { startOfWeek, getDate, parse, format, getDay } from "date-fns";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
+const locales = {
+    "en-US": require("date-fns/locale/en-US"),
+};
+const localizer = dateFnsLocalizer({
+    format,
+    parse,
+    startOfWeek,
+    getDay,
+    getDate,
+    locales,
+});
 
 function StudentDirectory() {     
       //initialize students
       const textFieldRefFirst = useRef(null);
       const textFieldRefLast = useRef(null);
       const textFieldRefGPA = useRef(null);
+      const textFieldRefBday = useRef(null);
      // const textFieldRefBday = useRef(null);
       const [students, setStudents] = useState([])
       //get prev responses
@@ -31,6 +47,7 @@ function StudentDirectory() {
                 fname : textFieldRefFirst.current.value,
                 lname : textFieldRefLast.current.value,
                 GPA : textFieldRefGPA.current.value,
+                bday: textFieldRefBday.current.value,
             }
             addDoc(collection(db, "students"), newStudent)//add the new student
             .then((docRef) => {
@@ -41,6 +58,7 @@ function StudentDirectory() {
             textFieldRefFirst.current.value = ""
             textFieldRefLast.current.value = ""
             textFieldRefGPA.current.value = ""
+            textFieldRefBday.current.value = ""
 
         }
 
@@ -103,6 +121,20 @@ function StudentDirectory() {
             })
             .catch((e) => console.error(e))
             textFieldRefGPA.current.value=""
+        }
+        const editBirthday = (stuID) => {
+            updateDoc(doc(db, "students", stuID), {
+                bday: textFieldRefBday.current.value
+            })
+            .then((docRef) => {
+                const tempStudents = [...students]
+                tempStudents.forEach((student) => {
+                    console.log("stuID: "+ student.id)
+                })
+                setStudents(tempStudents) //update state
+            })
+            .catch((e) => console.error(e))
+            textFieldRefBday.current.value=""
         }
 
         return(
