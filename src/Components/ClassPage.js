@@ -4,6 +4,8 @@ import { initializeApp } from "firebase/app"
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import db from "../firebase.js"
 import RosterList from "./RosterList.js"
+import {useNavigate} from "react-router-dom"; 
+import {Button} from "@mui/material"; 
 
 function ClassPage (props) {
 
@@ -11,6 +13,7 @@ function ClassPage (props) {
     const[teacherInfo, setTeacherInfo] = useState(); 
     const[curStudent, setCurStudent] = useState(); 
     const[allStudents, setAllStudents] = useState(); 
+    const navigate = useNavigate(); 
 
     const classID = props.classID; 
     console.log(classID); 
@@ -62,11 +65,12 @@ function ClassPage (props) {
         console.log(curStudent); 
     return(
         <div>
-            <MainHeader /> 
+            <MainHeader curURL={""}/> 
             <h2 style={{fontFamily: "arial", fontSize: 32}}>Class Page for {className}</h2>
             <h3 style={{fontFamily: "arial", fontsize: 26, fontStyle: "italic"}}>Teacher: {teacherName}</h3>
             <h3 style={{fontFamily: "arial", fontSize: 24}}>Current Roster</h3>
             <RosterList studentRoster={curStudent} classID={classID} rosterInfo={classInfo.roster}/>
+            <Button variant="outlined" style={{alignContent: "right", marginBottom: 10, margin: 5}} onClick={() => {navigate(-1)}}>Back to Class List</Button>
         </div>
     );
     }

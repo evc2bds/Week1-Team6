@@ -7,7 +7,7 @@ class MainHeader extends React.Component {
         return(
             <div style={{borderBottomStyle: "dotted", borderThickness: 2, padding: 5, paddingBottom: 20, backgroundColor: "white"}}>
                 <TitleHeader />
-                <DropdownNavbar />
+                <DropdownNavbar curURL={this.props.curURL}/>
             </div>
         );
     }

@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { getFirestore, collection, deleteDoc, addDoc, doc, getDocs, updateDoc, } from "firebase/firestore";
 import {useState, useEffect, useRef} from "react"
 import db from "../firebase.js";
+import MainHeader from "./MainHeader.js"
 
 function StudentDirectory() {     
       //initialize students
@@ -106,6 +107,7 @@ function StudentDirectory() {
 
         return(
             <div className="studentdirectory">
+            <MainHeader curURL="studentdashboard"/>
             <br></br>
             <form onSubmit={addStudent}>
                 <label for="firstName">Enter Student's First Name: </label>

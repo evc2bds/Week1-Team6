@@ -34,6 +34,7 @@ function ClassList(props) {
             x.push(newClass); 
         })
         setClasses(x); 
+        props.updateDB(x2); 
         }
         )
     }

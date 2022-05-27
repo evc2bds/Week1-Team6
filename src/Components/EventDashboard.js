@@ -9,6 +9,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../App.css";
+import MainHeader from "./MainHeader.js"
 
 //declare localizer for format of date
 const locales = {
@@ -69,6 +70,7 @@ function EventDashboard() {
     console.log(events)
     return (
         <div className="App">
+        <MainHeader curURL={"events"}/>
         <h1>Event Calendar</h1>
         <h4>Add New Event:</h4>
             <div>

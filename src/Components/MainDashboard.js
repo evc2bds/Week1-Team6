@@ -8,7 +8,7 @@ class MainDashboard extends React.Component {
     render() {
         return(
             <div style={{textAlign: "center"}}>
-                <MainHeader />
+                <MainHeader curURL={"/"} />
                 <ImportantLinks />
                 <CurrentDay />
                 

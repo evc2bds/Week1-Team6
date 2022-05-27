@@ -21,10 +21,10 @@ class QuickLinks extends React.Component {
                 <p>
                     <nav style={{borderBottom: "solid 1px", paddingBottom: "1rem"}}>
                         <Link to="/">Home</Link> | {" "}
-                        <Link to="/teacherdashboard">Teacher Dashboard</Link> | {" "}
                         <Link to="/studentdashboard">Student Dashboard</Link> | {" "}
-                        <Link to="/events">Event Calendar</Link> | {" "}
-                        <Link to="/classes">Class List</Link>
+                        <Link to="/teacherdashboard">Teacher Dashboard</Link> | {" "}
+                        <Link to="/classes">Class List</Link> | {" "}
+                        <Link to="/events">Event Calendar</Link> 
                     </nav>
                 </p>
             </div>
