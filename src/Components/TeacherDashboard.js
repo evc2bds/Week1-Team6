@@ -64,7 +64,7 @@ function TeacherDashboard() {
 
     const editClassName = (teacherID) => {
         updateDoc(doc(db, "Teachers", teacherID), {
-            className: textFieldRefLast.current.value
+            className: textFieldRefClass.current.value
         })
         .then((docRef) => {
             const updatedTeachers = [...teachers]
