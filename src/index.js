@@ -1,31 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
 //import ImportantLinks from './ImportantLinks';
-import Error from "./Components/Error";
-import EventDashboard from './Components/EventDashboard';
-import StudentDirectory from './Components/StudentDirectory';
-import TeacherDashboard from './Components/TeacherDashboard';
-import ClassPage from "./Components/ClassPage"
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-   {/* <Routes>
-     <Route path="maindashboard" element={<App/>}/>
-      <Route path="teacherdashboard" element={<TeacherDashboard/>}/>
-      <Route path="studentdashboard" element={<StudentDirectory/>}/>
-      <Route path="events" element={<EventDashboard/>}/>
-     <Route path="*" element={<Error />}/>
-   </Routes> */}
-   <ClassPage classID={"clNAluBTYeRAfSIj2ZC9"} />
-  
-  </BrowserRouter>,
+  <App/>
+  ,
   root
    
 );
