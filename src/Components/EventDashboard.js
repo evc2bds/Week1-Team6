@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import AllEvents from "./AllEvents.js"
+import Button from '@mui/material/Button';
 import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, deleteDoc, Timestamp } from "firebase/firestore";
 import db from "../firebase.js";
 import format from "date-fns/format";
@@ -81,7 +82,7 @@ function EventDashboard() {
                     <input id="eventStart" type="datetime-local" style={{ width: "20%", marginRight: "10px" }} ref={textFieldRefDate} />
                     <label for="eventEnd">End: </label>
                     <input id="eventEnd" type="datetime-local" style={{ width: "20%", marginRight: "10px" }} ref={textFieldRefDateEnd} />
-                    <input type="submit" value="Add Event"/>
+                    <Button type="submit" variant='contained'>Add Event</Button>
                 </form>
             </div>
             <Calendar 
