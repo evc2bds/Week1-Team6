@@ -3,7 +3,7 @@ import AllEvents from "./AllEvents.js"
 import Button from '@mui/material/Button';
 import { getFirestore, collection, addDoc, doc, getDocs, updateDoc, deleteDoc, Timestamp } from "firebase/firestore";
 import db from "../firebase.js";
-import { startOfWeek, getDay, getDate, parse, format } from "date-fns";
+import { startOfWeek, getDay, getDate, parse, format, } from "date-fns";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../App.css";

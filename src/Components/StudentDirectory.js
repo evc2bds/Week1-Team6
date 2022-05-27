@@ -74,13 +74,11 @@ function StudentDirectory() {
                 setStudents(tempStudents) //update state
             })
             .catch((e)=> console.error(e))
-
-            
         }
 
         const editFirstName = (stuID) => {
             updateDoc(doc(db, "students", stuID), {
-                fname: textFieldRefFirst.current.value
+                fname: (textFieldRefFirst.current.value === ""?console.log("Missing input"):textFieldRefFirst.current.value)
             })
             .then((docRef) => {
                 const tempStudents = [...students]
@@ -95,7 +93,7 @@ function StudentDirectory() {
     
         const editLastName = (stuID) => {
             updateDoc(doc(db, "students", stuID), {
-                lname: textFieldRefLast.current.value
+                lname: (textFieldRefLast.current.value=== ""?console.log("Missing input"):textFieldRefLast.current.value)
             })
             .then((docRef) => {
                 const tempStudents = [...students]
@@ -124,7 +122,7 @@ function StudentDirectory() {
         }
         const editBirthday = (stuID) => {
             updateDoc(doc(db, "students", stuID), {
-                bday: textFieldRefBday.current.value
+                bday: (textFieldRefBday.current.value=== ""?console.log("Missing input"):textFieldRefBday.current.value)
             })
             .then((docRef) => {
                 const tempStudents = [...students]

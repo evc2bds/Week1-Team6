@@ -36,7 +36,7 @@ function TeacherDashboard() {
 
     const editFirstName = (teacherID) => {
         updateDoc(doc(db, "Teachers", teacherID), {
-            firstName: textFieldRefFirst.current.value
+            firstName: (textFieldRefFirst.current.value=== ""?console.log("Missing input"):textFieldRefFirst.current.value)
         })
         .then((docRef) => {
             const updatedTeachers = [...teachers]
@@ -50,7 +50,7 @@ function TeacherDashboard() {
 
     const editLastName = (teacherID) => {
         updateDoc(doc(db, "Teachers", teacherID), {
-            lastName: textFieldRefLast.current.value
+            lastName: (textFieldRefLast.current.value=== ""?console.log("Missing input"):textFieldRefLast.current.value)
         })
         .then((docRef) => {
             const updatedTeachers = [...teachers]
@@ -64,7 +64,7 @@ function TeacherDashboard() {
 
     const editClassName = (teacherID) => {
         updateDoc(doc(db, "Teachers", teacherID), {
-            className: textFieldRefClass.current.value
+            className: (textFieldRefClass.current.value=== ""?console.log("Missing input"):textFieldRefClass.current.value)
         })
         .then((docRef) => {
             const updatedTeachers = [...teachers]
